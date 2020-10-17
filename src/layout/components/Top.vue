@@ -83,10 +83,20 @@
       </div>
       <div v-if="!showLogin" style="width: 100%;" class="dialogVisible">
         <div class="demo-input-suffix">
-          手机号码/邮箱：
+          手机号码：
           <el-input
             v-model="userName"
-            placeholder="请输入 手机号码/邮箱"
+            type="number"
+            placeholder="请输入 手机号码"
+            suffix-icon="el-icon-user"
+          />
+        </div>
+        <div class="demo-input-suffix">
+          昵称：
+          <el-input
+            v-model="nickname"
+            type="number"
+            placeholder="请输入昵称"
             suffix-icon="el-icon-user"
           />
         </div>
@@ -104,11 +114,11 @@
           <span style="width: 100%;text-align: left;" class="ml-3"> 验证码：</span>
 
           <el-input
-            v-model="code"
+            v-model="captcha"
             placeholder="请输入验证码"
             class="col-10 mt-2"
           />
-          <button style="border: none;background-color: red;border-radius: 50vh; color: white;" @click="sendCode">
+          <button style="border: none;background-color: red;border-radius: 50vh; color: white;" :disabled="sendCodeStatus" @click="sendCode">
             {{ phoneCode }}
           </button>
 
@@ -130,6 +140,7 @@
 import { Seach } from '@/api/top'
 // import { Song } from '@/api/music'
 import { User } from '@/api/user'
+import { setToken } from '@/utils/auth'
 export default {
   name: 'Top',
   data() {
@@ -142,14 +153,17 @@ export default {
       showLogin: true,
       dialogVisible: false,
       loginTitle: '登录',
-      userName: '',
-      passWord: '',
+      userName: null,
+      passWord: null,
       // 0是登录,1是注册
+      captcha: null,
+      nickname: null,
       loginType: 0,
       loginStatus: '未登录',
       phoneCode: '发送验证码',
-      code: null,
-      codeStatus: true
+      codeStatus: true,
+      countDown: 60,
+      sendCodeStatus: false
     }
   },
   created() {
@@ -193,19 +207,127 @@ export default {
     handelCance() {
       this.dialogVisible = false
     },
-    handelLogin() {
 
+    async handelLogin() {
+      const status = this.loginType
+      switch (status) {
+        // 0是登录,1是注册
+        case 0:
+          if (this.userName != null && this.passWord != null) {
+            const res = this.cheackPE(this.userName)
+            if (res) {
+              const option = {
+                type: res,
+                username: this.userName,
+                password: this.password
+              }
+              const { message, cookie } = await User.login(option)
+              this.$message({
+                showClose: true,
+                message: message,
+                type: 'success'
+              })
+              if (cookie) {
+                setToken(cookie)
+                this.loginStatus = '登录成功'
+              }
+            }
+          } else {
+            this.$message({
+              showClose: true,
+              message: '请填写完整的手机号码/邮箱/密码',
+              type: 'error'
+            })
+          }
+          break
+        case 1:
+          if (this.userName != null && this.passWord != null && this.nickname != null && this.captcha != null) {
+            this.cheackPE(this.userName)
+          } else {
+            this.$message({
+              showClose: true,
+              message: '请填写完整的手机号码/邮箱/密码',
+              type: 'error'
+            })
+          }
+          break
+        default:
+          console.log('登录错误')
+      }
     },
+    // 验证是邮箱还是手机号码
+    cheackPE(e) {
+      if (e.search('@') != -1) {
+        // 调用验证规则
+        const res = this.emailVerification(e)
+        console.log('这是邮箱', res)
+        return res
+      } else {
+        const res = this.phoneVerification(e)
+        console.log('电话号码', res)
+        return res
+      }
+    },
+
+    // 验证手机号码是否正确
+    phoneVerification(phone) {
+      const reg = /^1(3[0-9]|4[5,7]|5[0,1,2,3,5,6,7,8,9]|6[2,5,6,7]|7[0,1,7,8]|8[0-9]|9[1,8,9])\d{8}$/
+      if (!reg.test(phone)) {
+        this.$message({
+          showClose: true,
+          message: '手机号码有误，请重填',
+          type: 'error'
+        })
+        return false
+      } else {
+        return 'cellphone'
+      }
+    },
+    // 验证邮箱是否正确
+    emailVerification(email) {
+      var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
+      if (reg.test(email)) {
+        // alert('邮箱格式正确')
+        return 'email'
+      } else {
+        this.$message({
+          showClose: true,
+          message: '邮箱格式不正确，请重填',
+          type: 'error'
+        })
+        // alert('邮箱格式不正确')
+        return false
+      }
+    },
+
     async sendCode() {
-      console.log(this.userName)
+      // console.log(this.userName)
       if (this.userName) {
-        console.log(1)
         const num = this.userName
-        const { code } = await User.sentCode(num)
+        const {code}  = await User.sentCode(num)
+
 
         if (code == 200) {
+          this.sendCodeStatus = true
           this.codeStatus = false
+          const time = setInterval(() => {
+            if (this.countDown <= 0) {
+              clearInterval(time)
+              this.countDown = 60
+              this.phoneCode = '发送验证码'
+            }
+            this.phoneCode = this.countDown - 1
+            this.countDown = this.phoneCode
+            // console.log(this.phoneCode)
+          }, 1000)
+        }else{
+          this.$message({
+            showClose: true,
+            message: '请输入正确的手机号码',
+            type: 'error'
+          })
         }
+
       }
     }
   }
