@@ -1,12 +1,11 @@
 <template>
-    <div>
-      这是网红歌曲的列表
-    </div>
+  <div>专辑</div>
+
 </template>
 
 <script>
     export default {
-        name: "SeachSongList"
+        name: "Album"
     }
 </script>
 

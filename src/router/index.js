@@ -12,15 +12,15 @@ const routes = [
     component: Layout,
     children: [
       {
-        path: 'home',
+        path: '/home',
         name: 'home',
         component: () => import('../views/Home'),
         meta: { title: '首页' }
       },
       {
-        path: 'seach/songList',
-        name: 'songList',
-        component: () => import('../views/appMain/SeachSongList')
+        path: '/seach',
+        name: 'seach',
+        component: () => import('../views/Seach/index')
       }
     ]
   }
@@ -30,5 +30,10 @@ const routes = [
 const router = new VueRouter({
   routes
 })
+
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 export default router

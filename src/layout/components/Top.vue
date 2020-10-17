@@ -27,7 +27,7 @@
 
       <div class="popoverHot text-danger h5">热搜榜:</div>
 
-      <ul class=" popoverHotContent">
+      <ul v-loading="hotloading" class=" popoverHotContent">
         <li v-for="(item,index) in hotList" :key="index" class="list-unstyled  hotLi" @click="handleClickHot(item.searchWord )">
 
           <span class="text-dark h4  " @click="handleClickHot(item.searchWord )">{{ index+1 }}</span>
@@ -149,6 +149,7 @@ export default {
       /* 热搜榜*/
       hotList: [],
       hotShow: false,
+      hotloading: true,
       /* 登录*/
       showLogin: true,
       dialogVisible: false,
@@ -172,13 +173,18 @@ export default {
     /* 热搜榜*/
     async getHot() {
       const { data } = await Seach.getSearchHot()
-      // console.log(data)
-      data.map(e => {
-        if (e.iconUrl == null) {
-          e.iconUrl = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1602843601248&di=82658b6c03688e73fa61b792d52c718b&imgtype=0&src=http%3A%2F%2Fpic.16pic.com%2F00%2F26%2F38%2F16pic_2638652_b.jpg'
-        }
-      })
-      this.hotList = data
+      if (data) {
+        this.hotloading = false
+        // console.log(data)
+        data.map(e => {
+          if (e.iconUrl == null) {
+            e.iconUrl = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1602843601248&di=82658b6c03688e73fa61b792d52c718b&imgtype=0&src=http%3A%2F%2Fpic.16pic.com%2F00%2F26%2F38%2F16pic_2638652_b.jpg'
+          }
+        })
+        this.hotList = data
+      } else {
+        this.hotloading = true
+      }
     },
     houFocus() {
       this.getHot()
@@ -193,9 +199,15 @@ export default {
     async handleClickHot(e) {
       // console.log(11)
       // console.log(e)
-      const keywords = e
-      const { result } = await Seach.getSearchHotSong(keywords)
-      console.log(result)
+      localStorage.setItem('keywords', e)
+      this.$router.push({
+        path: 'seach'
+      })
+
+      location.reload()
+      // const keywords = e
+      // const { result } = await Seach.getSearchHotSong(keywords)
+      // console.log(result)
       // const id = result.songs[0].id
       // const { data } = await Song.getSongUrl(id)
       // console.log(data)
@@ -304,8 +316,7 @@ export default {
       // console.log(this.userName)
       if (this.userName) {
         const num = this.userName
-        const {code}  = await User.sentCode(num)
-
+        const { code } = await User.sentCode(num)
 
         if (code == 200) {
           this.sendCodeStatus = true
@@ -320,14 +331,13 @@ export default {
             this.countDown = this.phoneCode
             // console.log(this.phoneCode)
           }, 1000)
-        }else{
+        } else {
           this.$message({
             showClose: true,
             message: '请输入正确的手机号码',
             type: 'error'
           })
         }
-
       }
     }
   }
@@ -368,6 +378,7 @@ export default {
     height: 50%;
     top: 8%;
     left: 13.7%;
+    z-index: 9999;
     overflow: auto;
     border-top-left-radius: 2%;
     border-top-right-radius: 2%;

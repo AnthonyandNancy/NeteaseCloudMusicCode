@@ -48,8 +48,8 @@ service.interceptors.response.use(
     // }
   },
   error => {
-    const { data, status } = error.response
-
+    const { data } = error.response
+    console.log(error)
     return Promise.reject(data)
   }
 )

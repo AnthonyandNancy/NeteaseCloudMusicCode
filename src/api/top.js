@@ -12,7 +12,7 @@ export const Seach = {
 
   getSearchHotSong: function(params) {
     return request({
-      url: `search?keywords=${params}`,
+      url: `search?keywords=${params.keywords}&type=${params.type}&offset=${params.offset}`,
       method: 'get'
 
     })

@@ -46,7 +46,7 @@ export default {
   methods:{
     go() {
       this.$router.push({
-        path: 'seach/songList'
+        path: 'seach'
       })
     }
   }

@@ -38,7 +38,6 @@ export default {
   .appmain{
     width: 86.3%;
     height: 85vh;
-    background-color: #c20c0c;
     float: left;
     overflow: auto;
   }
