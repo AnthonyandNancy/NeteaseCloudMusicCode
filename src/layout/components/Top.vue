@@ -1,0 +1,345 @@
+<template>
+  <div class="nav mt--5">
+    <img :src="require('@/assets/images/logo.png')">
+
+    <div class="mt-3 go">
+      <el-button icon="el-icon-arrow-left" />
+      <el-button icon="el-icon-arrow-right" />
+    </div>
+    <el-input
+      v-model="seachValue"
+      placeholder="音乐/视频/用户"
+      class=" mt-3 mr-5 seach"
+      @focus="houFocus"
+      @blur="hotBlur"
+    >
+      <i slot="prefix" class="el-input__icon el-icon-search" />
+    </el-input>
+
+    <div class="ml-auto mt-3 mr-5 " @click="handelShowLogin">
+      <el-button icon="el-icon-s-custom" />
+      <span class="text-light">{{ loginStatus }}</span>
+    </div>
+
+    <!--    热门列表的弹窗-->
+    <div v-if="hotShow" class="popoverDiv">
+      <div class="popoverHot text-danger h5">搜索历史:</div>
+
+      <div class="popoverHot text-danger h5">热搜榜:</div>
+
+      <ul class=" popoverHotContent">
+        <li v-for="(item,index) in hotList" :key="index" class="list-unstyled  hotLi" @click="handleClickHot(item.searchWord )">
+
+          <span class="text-dark h4  " @click="handleClickHot(item.searchWord )">{{ index+1 }}</span>
+          <div class="hotDiv" @click="handleClickHot(item.searchWord )">
+            <div style="width: 100%;">
+              <div class="hotsearchWord">{{ item.searchWord }}</div>
+              <div class="hotscore">(  {{ item.score }}  )</div>
+            </div>
+            <div style="width: 100%;">
+              <div class="hotcontent">{{ item.content }}</div>
+
+              <img class="hotIcon" :src="item.iconUrl">
+            </div>
+
+          </div>
+
+        </li>
+      </ul>
+
+    </div>
+
+    <!--    登录界面-->
+    <el-dialog
+      :title="loginTitle"
+      :visible.sync="dialogVisible"
+      width="30%"
+    >
+      <div v-if="showLogin" style="width: 100%;" class="dialogVisible">
+        <div class="demo-input-suffix">
+          手机号码/邮箱：
+          <el-input
+            v-model="userName"
+            placeholder="请输入 手机号码/邮箱"
+            suffix-icon="el-icon-user"
+          />
+        </div>
+        <div class="demo-input-suffix">
+          密码：
+          <el-input
+            v-model="passWord"
+            placeholder="请输入密码"
+            type="password"
+            suffix-icon="el-icon-warning-outline"
+          />
+        </div>
+        <div style="float: right;" class=" text-primary" @click="()=>{showLogin=false;loginTitle='注册';loginType=1}">
+          注册
+        </div>
+        <div class="btnDiv">
+          <button @click="handelCance">取消</button>
+          <button @click="handelLogin">登录</button>
+        </div>
+      </div>
+      <div v-if="!showLogin" style="width: 100%;" class="dialogVisible">
+        <div class="demo-input-suffix">
+          手机号码/邮箱：
+          <el-input
+            v-model="userName"
+            placeholder="请输入 手机号码/邮箱"
+            suffix-icon="el-icon-user"
+          />
+        </div>
+        <div class="demo-input-suffix">
+          密码：
+          <el-input
+            v-model="passWord"
+            placeholder="请输入密码"
+            type="password"
+            suffix-icon="el-icon-warning-outline"
+            :disabled="codeStatus"
+          />
+        </div>
+        <div class="row">
+          <span style="width: 100%;text-align: left;" class="ml-3"> 验证码：</span>
+
+          <el-input
+            v-model="code"
+            placeholder="请输入验证码"
+            class="col-10 mt-2"
+          />
+          <button style="border: none;background-color: red;border-radius: 50vh; color: white;" @click="sendCode">
+            {{ phoneCode }}
+          </button>
+
+        </div>
+        <div style="float: right;" class=" text-primary mt-1" @click="()=>{showLogin=true;loginTitle='登录';loginType=0}">
+          登录
+        </div>
+        <div class="btnDiv">
+          <button @click="handelCance">取消</button>
+          <button @click="handelLogin">{{ loginTitle }}</button>
+        </div>
+      </div>
+    </el-dialog>
+
+  </div>
+</template>
+
+<script>
+import { Seach } from '@/api/top'
+// import { Song } from '@/api/music'
+import { User } from '@/api/user'
+export default {
+  name: 'Top',
+  data() {
+    return {
+      seachValue: '',
+      /* 热搜榜*/
+      hotList: [],
+      hotShow: false,
+      /* 登录*/
+      showLogin: true,
+      dialogVisible: false,
+      loginTitle: '登录',
+      userName: '',
+      passWord: '',
+      // 0是登录,1是注册
+      loginType: 0,
+      loginStatus: '未登录',
+      phoneCode: '发送验证码',
+      code: null,
+      codeStatus: true
+    }
+  },
+  created() {
+  },
+  methods: {
+    /* 热搜榜*/
+    async getHot() {
+      const { data } = await Seach.getSearchHot()
+      // console.log(data)
+      data.map(e => {
+        if (e.iconUrl == null) {
+          e.iconUrl = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1602843601248&di=82658b6c03688e73fa61b792d52c718b&imgtype=0&src=http%3A%2F%2Fpic.16pic.com%2F00%2F26%2F38%2F16pic_2638652_b.jpg'
+        }
+      })
+      this.hotList = data
+    },
+    houFocus() {
+      this.getHot()
+      this.hotShow = true
+    },
+    hotBlur() {
+      setTimeout(() => {
+        this.hotShow = false
+      }, 500)
+    },
+    // 点击列表获得热门歌曲详细内容
+    async handleClickHot(e) {
+      // console.log(11)
+      // console.log(e)
+      const keywords = e
+      const { result } = await Seach.getSearchHotSong(keywords)
+      console.log(result)
+      // const id = result.songs[0].id
+      // const { data } = await Song.getSongUrl(id)
+      // console.log(data)
+    },
+    /* 登录*/
+    handelShowLogin() {
+      this.dialogVisible = true
+    },
+    handelCance() {
+      this.dialogVisible = false
+    },
+    handelLogin() {
+
+    },
+    async sendCode() {
+      console.log(this.userName)
+      if (this.userName) {
+        console.log(1)
+        const num = this.userName
+        const { code } = await User.sentCode(num)
+
+        if (code == 200) {
+          this.codeStatus = false
+        }
+      }
+    }
+  }
+}
+</script>
+
+<style scoped lang="scss">
+.nav{
+    margin: 0;
+    padding: 0;
+    background-color: #242424;
+    width: 100%;
+    height: 64px;
+
+    .seach{
+      width: 10%;
+      height: 1%;
+      border-radius: 50px;
+    }
+  .go{
+    .el-button{
+      border-radius: 50%;
+      background-color: rgba(36,36,36,0.1);
+      border: none;
+    }
+
+  }
+
+  .el-button{
+    border-radius: 50%;
+    background-color: rgba(36,36,36,0.1);
+    border: none;
+  }
+  .popoverDiv{
+    position: absolute;
+    box-shadow: aliceblue;
+    width: 16%;
+    height: 50%;
+    top: 8%;
+    left: 13.7%;
+    overflow: auto;
+    border-top-left-radius: 2%;
+    border-top-right-radius: 2%;
+    border-bottom-left-radius: 2%;
+    border-bottom-right-radius: 2%;
+    background-color:white ;
+
+    span{
+     margin-left: -90%;
+      display: inline;
+    }
+    li{
+      /*border: #242424 solid 1px;*/
+      height: 5vh;
+    }
+    li:hover{
+      background-color: rgba(58,136,253,0.1);
+    }
+    .popoverHot {
+      line-height: 5vh;
+      text-align: left;
+    }
+      .popoverHotContent{
+        margin: 0;
+        padding: 0;
+        .hotDiv{
+          position: relative;
+          margin-top: -10%;;
+          padding: 0;
+          .hotsearchWord{
+            text-align: left;
+            display: inline-block;
+            float: left;
+            margin-left: 11%;
+          }
+          .hotscore{
+            display: inline-block;
+            float: left;
+            color: #757575;
+            margin-top: 1%;
+            margin-left: 1%;
+            font-size: small;
+          }
+          .hotcontent{
+            position: absolute;
+            left: 3.5vh;
+            top: 2.5vh;
+            color: #757575;
+            font-size: small;
+          }
+          .hotIcon{
+            width: 2.5vh;
+            height: 2.5vh;
+            float: right;
+          }
+        }
+
+      }
+
+  }
+  .popoverDiv::-webkit-scrollbar {/*滚动条整体样式*/
+    width: 2px;     /*高宽分别对应横竖滚动条的尺寸*/
+    border-radius: 5%;
+    height: 1px;
+  }
+
+  .popoverDiv::-webkit-scrollbar-thumb{/*滚动条里面小方块*/
+    border-radius: 5%;
+    box-shadow: inset 0 0 5px rgba( 0, 0, 0, .1);
+    background: #c20c0c;
+  }
+
+  .popoverDiv::-webkit-scrollbar-track{/*滚动条里面轨道*/
+    box-shadow: inset 0 0 5px rgba( 1, 1, 1, 0.1);
+    border-radius: 2%;
+    background: #EDEDED;
+  }
+
+  .dialogVisible{
+    text-align: left;
+    .btnDiv{
+      width: 100%;
+      button{
+        border: none;
+        background-color: #409eff;
+        border-radius: 1vh;
+        width: 10vh;
+        height: 4vh;
+        color: white;
+        margin-top: 2vh;
+        margin-left: 10vh;
+      }
+    }
+
+  }
+}
+</style>
