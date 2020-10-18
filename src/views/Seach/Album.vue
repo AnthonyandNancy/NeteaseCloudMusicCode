@@ -68,6 +68,7 @@ export default {
     handelClickAlbum(id) {
       // console.log(id)
       this.$store.dispatch('app/chooseAblum', id)
+      localStorage.setItem('ablumID',id)
       this.$router.push({
         path: '/seach/AlbumContent'
       })
