@@ -12,6 +12,7 @@
       class=" mt-3 mr-5 seach"
       @focus="houFocus"
       @blur="hotBlur"
+      @change="handelChangeSeach"
     >
       <i slot="prefix" class="el-input__icon el-icon-search" />
     </el-input>
@@ -170,6 +171,16 @@ export default {
   created() {
   },
   methods: {
+    /* 搜索框按下回车*/
+    handelChangeSeach() {
+      console.log('搜索框按下回车')
+      localStorage.setItem('keywords', this.seachValue)
+      this.$router.push({
+        path: 'seach'
+      })
+      this.$store.dispatch('app/chooseHotSong', this.seachValue)
+    },
+
     /* 热搜榜*/
     async getHot() {
       const { data } = await Seach.getSearchHot()
