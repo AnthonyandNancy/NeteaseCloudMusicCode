@@ -212,7 +212,7 @@ export default {
       // console.log(e)
       localStorage.setItem('keywords', e)
       this.$router.push({
-        path: 'seach'
+        path: '/seach'
       })
       this.$store.dispatch('app/chooseHotSong', e)
       // const keywords = e

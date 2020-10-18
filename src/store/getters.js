@@ -1,5 +1,6 @@
 const getters = {
-  hotSong: state => state.app.storeHotSong
+  keywords: state => state.app.keywords,
+  ablum: state => state.app.ablum
 
 }
 export default getters

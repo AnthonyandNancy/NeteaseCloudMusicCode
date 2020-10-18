@@ -1,7 +1,8 @@
 
 const getDefaultState = () => {
   return {
-    storeHotSong: null
+    keywords: null,
+    ablum: null
   }
 }
 
@@ -9,8 +10,11 @@ const state = getDefaultState()
 
 const mutations = {
 
-  SET_STOREHOTSONG: (state, storeHotSong) => {
-    state.storeHotSong = storeHotSong
+  SET_kEYWORDS: (state, keywords) => {
+    state.keywords = keywords
+  },
+  SET_ALBUM: (state, id) => {
+    state.ablum = id
   }
 
 }
@@ -19,7 +23,10 @@ const actions = {
   // 热门列表选择歌曲
   chooseHotSong({ commit }, song) {
     // console.log('热门列表选择歌曲',song)
-    commit('SET_STOREHOTSONG', song)
+    commit('SET_kEYWORDS', song)
+  },
+  chooseAblum({ commit }, id) {
+    commit('SET_ALBUM', id)
   }
 
 }

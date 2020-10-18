@@ -21,7 +21,13 @@ const routes = [
         path: '/seach',
         name: 'seach',
         component: () => import('../views/Seach/index')
+      },
+      {
+        path: '/seach/AlbumContent',
+        name: 'AlbumContent',
+        component: () => import('../views/Seach/AlbumContent')
       }
+
     ]
   }
 

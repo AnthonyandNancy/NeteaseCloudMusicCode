@@ -49,12 +49,11 @@
 
             </el-col>
             <el-col :span="5">
-              <div v-for="(albumItem,albumIndex) in item.album" :key="albumIndex" class="border-right">
-                <div v-for="(numItem,numIndex) in albumItem.length" :key="numIndex" class="album ">
-                  {{ albumItem[numItem] }}
-                </div>
-              </div>
-
+                            <div class="border-right">
+                              <div class="album ">
+                                {{item.album.name}}
+                              </div>
+                            </div>
             </el-col>
           </el-row>
 
@@ -85,13 +84,13 @@ export default {
     }
   },
   computed: {
-    hotSong: function() {
+    Song: function() {
       // `this` 指向 vm 实例
-      return this.$store.getters.hotSong
+      return this.$store.getters.keywords
     }
   },
   watch: {
-    hotSong() {
+    Song() {
       this.feach()
     }
   },
@@ -103,11 +102,11 @@ export default {
   },
   methods: {
     async feach() {
-      const keywords = this.$store.getters.hotSong
+      const keywords = this.$store.getters.keywords
       if (!keywords) {
         this.keywords = localStorage.getItem('keywords')
       } else {
-        this.keywords = this.$store.getters.hotSong
+        this.keywords = this.$store.getters.keywords
       }
 
       const option = {
