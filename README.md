@@ -19,3 +19,11 @@
 ①  点击热门里的列表,跳到seach页面,展示单曲,专辑,歌手,歌单,用户,视频,歌词,电台的tabs,且更共展示了单曲tab里面的数据,差点击歌手和专辑跳到具体界面
 
 bug:  当你在 home页面时,点击热门列表是无效的,错误在于location.reload()这个方法,用vuex最佳
+
+Vuex思路,当我点击热门时,dispatch到action里面,action里将歌名commit到mutations里做更改
+
+在tabs页面里.computed检测到这个信息,当做更改时检测到,再次调用feach方法
+
+# 2020-10-18 13:47
+
+修复昨天的bug

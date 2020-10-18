@@ -49,9 +49,9 @@
 
             </el-col>
             <el-col :span="5">
-              <div  class="border-right"  v-for="(albumItem,albumIndex) in item.album" :key="albumIndex" >
-                <div class="album "  v-for="(numItem,numIndex) in albumItem.length" :key="numIndex" >
-                    {{albumItem[numItem]}}
+              <div v-for="(albumItem,albumIndex) in item.album" :key="albumIndex" class="border-right">
+                <div v-for="(numItem,numIndex) in albumItem.length" :key="numIndex" class="album ">
+                  {{ albumItem[numItem] }}
                 </div>
               </div>
 
@@ -61,6 +61,13 @@
         </div>
 
       </div>
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="list.songCount"
+        class=" pagination"
+        @current-change="hadelCurryPages"
+      />
     </div>
   </div>
 </template>
@@ -73,24 +80,54 @@ export default {
     return {
       list: [],
       keywords: '',
+      // 页码
       offset: 0
     }
   },
+  computed: {
+    hotSong: function() {
+      // `this` 指向 vm 实例
+      return this.$store.getters.hotSong
+    }
+  },
+  watch: {
+    hotSong() {
+      this.feach()
+    }
+  },
   created() {
+    // this.feach()
+  },
+  mounted() {
     this.feach()
   },
   methods: {
     async feach() {
-      const keywords = localStorage.getItem('keywords')
-      this.keywords = keywords
+      const keywords = this.$store.getters.hotSong
+      if (!keywords) {
+        this.keywords = localStorage.getItem('keywords')
+      } else {
+        this.keywords = this.$store.getters.hotSong
+      }
+
       const option = {
-        keywords: keywords,
+        keywords: this.keywords,
         type: 1,
         offset: this.offset
       }
       const { result } = await Seach.getSearchHotSong(option)
       this.list = result
-      console.log(result)
+      // console.log(result)
+    },
+    async hadelCurryPages(e){
+      const option = {
+        keywords: this.keywords,
+        type: 1,
+        offset: e
+      }
+      const { result } = await Seach.getSearchHotSong(option)
+      this.list = result
+      // console.log(result)
     }
   }
 }
@@ -124,11 +161,11 @@ export default {
       .el-row:hover{
         background-color: rgba(64,158,255,0.1);
       }
-.album{
-  color: #42b983;
-  font-size: small;
-  display: inline-block;
-}
+        .album{
+              color: #42b983;
+            font-size: small;
+           display: inline-block;
+            }
       .aliasContent{
         display: inline-block;
        text-align: left;
@@ -140,6 +177,9 @@ export default {
         color: #42b983;
         display: inline-block;
       }
+    }
+    .pagination{
+     margin: 0 auto;
     }
   }
 

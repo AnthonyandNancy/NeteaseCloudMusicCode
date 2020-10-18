@@ -130,7 +130,6 @@ export default {
 <style scoped lang="scss">
   .el-tab-pane{
     width: 100%;
-    height: 84vh;
   }
   /*ul {*/
   /*  margin: 5% auto 0 auto;*/

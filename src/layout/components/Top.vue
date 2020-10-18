@@ -203,8 +203,7 @@ export default {
       this.$router.push({
         path: 'seach'
       })
-
-      location.reload()
+      this.$store.dispatch('app/chooseHotSong', e)
       // const keywords = e
       // const { result } = await Seach.getSearchHotSong(keywords)
       // console.log(result)
