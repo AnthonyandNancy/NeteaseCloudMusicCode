@@ -63,15 +63,32 @@
           <!--          />-->
         </el-tab-pane>
         <el-tab-pane :label="commentCount" name="second">
-          <div v-if="commentList.hotComments" >
+          <div v-if="commentList.hotComments" class="second">
+            <h5 class="hot text-primary">精彩评论:</h5>
             <div v-for="(item,index) in commentList.hotComments " :key="index">
-              <h5>精彩评论</h5>
-              <img :src="item.user.avatarUrl " alt="" style="width: 3vh;height: 3vh;border-radius: 50%;">
-              <div>{{item.user.nickname}}</div>
-              <div>{{item.content}}</div>
-              <div>{{item.time | timeFordat}}</div>
+
+              <img :src="item.user.avatarUrl " alt="" class="hotimg">
+              <div class="nickname "><span class="text-primary">{{ item.user.nickname }}</span>:{{ item.content }}<div class="time">{{ item.time | timeFordat }}</div></div>
+
+              <el-divider />
             </div>
 
+          </div>
+          <div v-if="commentList.comments" class="second">
+            <h5 class="hot text-primary">最新评论:</h5>
+            <div v-for="(item,index) in commentList.comments " :key="index">
+
+              <img :src="item.user.avatarUrl " alt="" class="hotimg">
+              <div class="nickname "><span class="text-primary">{{ item.user.nickname }}</span>:{{ item.content }}<div class="time">{{ item.time | timeFordat }}</div></div>
+
+              <el-divider />
+            </div>
+            <el-pagination
+              background
+              layout="prev, pager, next"
+              :total="total"
+              @current-change="handleChange"
+            />
           </div>
 
         </el-tab-pane>
@@ -89,6 +106,7 @@ export default {
   name: 'AlbumContent',
   data() {
     return {
+      id:null,
       loading: true,
       list: [],
       ID: null,
@@ -119,12 +137,14 @@ export default {
     })
   },
   mounted() {
+    this.id=this.ablumID
   },
   methods: {
     async feach() {
       const ablumID = this.$store.getters.ablum
       if (!ablumID) {
         const ablumID = localStorage.getItem('ablumID')
+        this.id=ablumID
         const data = await Ablums.getContent(ablumID)
         const dynamicCount = await Ablums.getAblumsDetailDynamic(ablumID)
         this.getCommentList(ablumID)
@@ -174,7 +194,7 @@ export default {
       }
     },
 
-    //热门评论
+    // 热门评论
     // async  getHotCommentList(e) {
     //   if (this.total > 5000) {
     //     const option = {
@@ -206,8 +226,10 @@ export default {
     handleClick(e) {
       // console.log(e)
     },
-    hadelCurryPages(e) {
-
+    handleChange(e) {
+      this.offset = e
+      // console.log(this.offset)
+      this.getCommentList(this.id)
     }
   }
 }
@@ -308,6 +330,33 @@ export default {
         color: #42b983;
         display: inline-block;
       }
+      .second{
+        position: relative;
+        .hot{
+          display: block;
+          position: relative;
+          text-align: left;
+        }
+        .hotimg{
+          position: absolute;
+          left: 0%;
+          width: 5vh;
+          height: 5vh;
+          border-radius: 50%;
+        }
+        .nickname{
+          display: inline-block;
+          position: relative;
+          width: 95%;
+          left: 1.4%;
+          text-align: left;
+        }
+        .time{
+          text-align: left;
+          color: #757575;
+        }
+      }
+
     }
     .pagination{
       margin: 0 auto;
