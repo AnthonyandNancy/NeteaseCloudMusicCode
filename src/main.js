@@ -29,7 +29,7 @@ function dateFormat(fmt, date) {
 Vue.filter('timeFordat', (value) => {
   const date = new Date(value)
 
-  return  dateFormat('YYYY-mm-dd HH:MM', date)
+  return dateFormat('YYYY-mm-dd HH:MM', date)
 })
 
 new Vue({
