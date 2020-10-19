@@ -1,16 +1,16 @@
 <template>
-  <div class="home">
-    <img :src="list.album.blurPicUrl" alt="" style="width: 20vh;height:20vh;" class="ablumImg">
+  <div class="home" v-if="list.album !=undefined">
+    <img :src="list.album.blurPicUrl" alt="" style="width: 20vh;height:20vh;" class="ablumImg" >
     <div class="text-white ablumWord">专辑</div>
     <div class="albumname">{{ list.album.name }}</div>
     <div v-for="(item,index) in list.album.alias" :key="index" class="albumalias">({{ item }})</div>
     <div class="btnGroud">
       <el-button type="danger" icon="el-icon-caret-right">播放全部</el-button>
-      <el-button icon="el-icon-circle-plus-outline"><span style="display: inline-block;" v-if="dynamicCount.isSub">已</span>收藏({{dynamicCount.subCount}})</el-button>
+      <el-button icon="el-icon-circle-plus-outline"><span v-if="dynamicCount.isSub" style="display: inline-block;">已</span>收藏({{ dynamicCount.subCount }})</el-button>
       <el-button icon="el-icon-share">分享({{ dynamicCount.shareCount }})</el-button>
     </div>
     <div>歌手:{{ list.album.artist.name }}</div>
-    <div>评论数{{dynamicCount.commentCount}}</div>
+    <div>评论数{{ dynamicCount.commentCount }}</div>
   </div>
 </template>
 
@@ -22,7 +22,11 @@ export default {
     return {
       list: [],
       ID: null,
-      dynamicCount: null
+      dynamicCount: null,
+      imgSrc: '',
+      name: '',
+      alias: [],
+      isSub: null
 
     }
   },
@@ -32,7 +36,11 @@ export default {
     }
   },
   created() {
-    this.feach()
+    this.$nextTick(function()  {
+      this.feach()
+    })
+  },
+  mounted() {
   },
   methods: {
     async feach() {
@@ -56,6 +64,7 @@ export default {
 
 <style scoped lang="scss">
   .home{
+    position: relative;
     width: 100%;
     height: 80vh;
     .ablumImg{
@@ -72,30 +81,30 @@ export default {
       border-radius: 0.2vh;
       text-align: center;
       line-height: 2.5vh;
-      position: relative;
-      left: -15%;
-      top: 2.4vh;
+      position: absolute;
+      left: 15%;
+      top: 6%;
     }
     .albumname{
       display: inline-block;
       font-size: 3vh;
-      position: relative;
-      left: -14%;
-      top:3vh;
+      position: absolute;
+      left: 18.5%;
+      top: 5%;
     }
     .albumalias{
       display: inline-block;
       font-size: 3vh;
       position: relative;
-      left: -14%;
-      top: 3vh;
+      left:-22%;
+      top: 4vh;
       color: #757575;
     }
     .btnGroud{
       display: inline-block;
-      position: relative;
-      left: -37%;
-      top: 10vh;
+      position: absolute;
+      left: 14.8%;
+      top: 18%;
       color: #757575;
       .el-button{
         width: 13vh;
