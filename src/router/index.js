@@ -26,6 +26,11 @@ const routes = [
         path: '/seach/AlbumContent',
         name: 'AlbumContent',
         component: () => import('../views/Seach/AlbumContent')
+      },
+      {
+        path: '/seach/SingerContent',
+        name: 'AlbumContent',
+        component: () => import('../views/Seach/SingerContent')
       }
 
     ]

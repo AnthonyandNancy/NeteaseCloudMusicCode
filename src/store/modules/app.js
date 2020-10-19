@@ -2,7 +2,9 @@
 const getDefaultState = () => {
   return {
     keywords: null,
-    ablum: null
+    ablum: null,
+    singerID:null,
+    songId:null
   }
 }
 
@@ -15,6 +17,12 @@ const mutations = {
   },
   SET_ALBUM: (state, id) => {
     state.ablum = id
+  },
+  SET_SINGER: (state, id) => {
+    state.singerID = id
+  },
+  SET_SONG: (state, id) => {
+    state.songId = id
   }
 
 }
@@ -27,7 +35,14 @@ const actions = {
   },
   chooseAblum({ commit }, id) {
     commit('SET_ALBUM', id)
+  },
+  chooseSinger({ commit }, id) {
+    commit('SET_SINGER', id)
+  },
+  chooseSong({ commit }, id) {
+    commit('SET_SONG', id)
   }
+
 
 }
 

@@ -14,7 +14,7 @@
       <div>评论数{{ dynamicCount.commentCount }}</div>
     </div>
     <div class="tabs">
-      <el-tabs v-model="activeName" class="ml-4" @tab-click="handleClick">
+      <el-tabs v-model="activeName" class="ml-4" >
         <el-tab-pane label="歌曲列表" name="first">
           <div
             class="title border-left"
@@ -27,6 +27,7 @@
               v-for="(item,index) in list.songs"
               :key="index"
               class="border-bottom border-top "
+              @click="handleClick(item.id)"
             >
               <el-row>
                 <el-col :span="5">
@@ -241,8 +242,9 @@ export default {
     // },
 
     /* tabs*/
-    handleClick(e) {
-      // console.log(e)
+    handleClick(id) {
+      localStorage.setItem('songID',id)
+      this.$store.dispatch('app/chooseSong',id)
     },
     handleChange(e) {
       this.offset = e

@@ -42,14 +42,15 @@ service.interceptors.response.use(
     if (res.code = 200) {
       return res
     } else {
-      this.$message.error('获取失败,请重新刷新')
+      Message.error(res.msg)
     }
 
     // }
   },
   error => {
     const { data } = error.response
-    console.log(error)
+    console.log(data)
+    Message.error(data.msg)
     return Promise.reject(data)
   }
 )

@@ -1,12 +1,14 @@
 <template>
   <div>
     <!--    默认为 1 即单曲 , 取值意义 : 1: 单曲, 100: 歌手, 1000: 歌单, 1002: 用户, 1004: MV, 1006: 歌词, 1009: 电台, 1014: 视频, 1018:综合-->
-    <el-tabs v-model="activeName" @tab-click="handleClick" class="mt-4 ml-2 ">
+    <el-tabs v-model="activeName" class="mt-4 ml-2 " @tab-click="handleClick">
       <el-tab-pane label="单曲" name="first">
         <song />
       </el-tab-pane>
-      <el-tab-pane label="专辑" name="second"><album></album></el-tab-pane>
-      <el-tab-pane label="歌手" name="third">歌手</el-tab-pane>
+      <el-tab-pane label="专辑" name="second"><album /></el-tab-pane>
+      <el-tab-pane label="歌手" name="third">
+        <singer />
+      </el-tab-pane>
       <el-tab-pane label="歌单" name="fourth">歌单</el-tab-pane>
       <el-tab-pane label="用户" name="five">用户</el-tab-pane>
       <el-tab-pane label="视频" name="six">视频</el-tab-pane>
@@ -14,19 +16,20 @@
       <el-tab-pane label="电台" name="eight">电台</el-tab-pane>
     </el-tabs>
 
-
   </div>
 
 </template>
 
 <script>
 import Song from './Song'
-import Album from "./Album";
+import Album from './Album'
+import Singer from './Singer'
 export default {
   name: 'Index',
   components: {
     Album,
-    Song
+    Song,
+    Singer
   },
   data() {
     return {

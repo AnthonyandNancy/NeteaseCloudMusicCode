@@ -22,31 +22,39 @@
       <span class="text-light">{{ loginStatus }}</span>
     </div>
 
-    <!--    热门列表的弹窗-->
+    <!--    表的弹窗-->
     <div v-if="hotShow" class="popoverDiv">
-      <div class="popoverHot text-danger h5">搜索历史:</div>
+<!--  搜索列表-->
 
-      <div class="popoverHot text-danger h5">热搜榜:</div>
 
-      <ul v-loading="hotloading" class=" popoverHotContent">
-        <li v-for="(item,index) in hotList" :key="index" class="list-unstyled  hotLi" @click="handleClickHot(item.searchWord )">
+<!--      热门列-->
+      <div>
+        <div class="popoverHot text-danger h5">搜索历史:</div>
 
-          <span class="text-dark h4  " @click="handleClickHot(item.searchWord )">{{ index+1 }}</span>
-          <div class="hotDiv" @click="handleClickHot(item.searchWord )">
-            <div style="width: 100%;">
-              <div class="hotsearchWord">{{ item.searchWord }}</div>
-              <div class="hotscore">(  {{ item.score }}  )</div>
+        <div class="popoverHot text-danger h5">热搜榜:</div>
+
+        <ul v-loading="hotloading" class=" popoverHotContent">
+          <li v-for="(item,index) in hotList" :key="index" class="list-unstyled  hotLi" @click="handleClickHot(item.searchWord )">
+
+            <span class="text-dark h4  " @click="handleClickHot(item.searchWord )">{{ index+1 }}</span>
+            <div class="hotDiv" @click="handleClickHot(item.searchWord )">
+              <div style="width: 100%;">
+                <div class="hotsearchWord">{{ item.searchWord }}</div>
+                <div class="hotscore">(  {{ item.score }}  )</div>
+              </div>
+              <div style="width: 100%;">
+                <div class="hotcontent">{{ item.content }}</div>
+
+                <img class="hotIcon" :src="item.iconUrl">
+              </div>
+
             </div>
-            <div style="width: 100%;">
-              <div class="hotcontent">{{ item.content }}</div>
 
-              <img class="hotIcon" :src="item.iconUrl">
-            </div>
+          </li>
+        </ul>
 
-          </div>
+      </div>
 
-        </li>
-      </ul>
 
     </div>
 
@@ -173,12 +181,13 @@ export default {
   methods: {
     /* 搜索框按下回车*/
     handelChangeSeach() {
-      console.log('搜索框按下回车')
+      // console.log('搜索框按下回车')
       localStorage.setItem('keywords', this.seachValue)
       this.$router.push({
-        path: 'seach'
+        path: '/seach'
       })
       this.$store.dispatch('app/chooseHotSong', this.seachValue)
+      this.hotShow = false
     },
 
     /* 热搜榜*/

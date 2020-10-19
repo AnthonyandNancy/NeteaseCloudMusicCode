@@ -46,6 +46,7 @@
           v-for="(item,index) in list.songs"
           :key="index"
           class="border-bottom border-top "
+          @click="handelClick(item.id)"
         >
           <el-row>
             <el-col :span="5">
@@ -145,6 +146,10 @@ export default {
       this.list = result
       this.loading = false
       // console.log(result)
+    },
+    handelClick(id){
+      localStorage.setItem('songID',id)
+      this.$store.dispatch('app/chooseSong',id)
     }
   }
 }

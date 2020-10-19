@@ -52,7 +52,17 @@ Vuex思路,当我点击热门时,dispatch到action里面,action里将歌名commi
 
 专辑里面的评论完成
 
-2020-10-19 15:03
+# 2020-10-19 15:03
 
 专辑里面的专辑详细完成
+
+# 2020-10-19 18:24
+
+在vuex里面新增了两个专属id    singer和song,并且在专辑页面和单曲的页面使用了dispatch保存id,singerid方便的路由的展示查询
+
+修改了request.js里面错误的拦截提示
+
+新增singer页面和跳转到详情的singer页面的路由,修改了singer专属要用到的api.js,在详细页面中,写好了头部内容
+
+
 
