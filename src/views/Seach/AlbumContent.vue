@@ -63,6 +63,17 @@
           <!--          />-->
         </el-tab-pane>
         <el-tab-pane :label="commentCount" name="second">
+          <div style="height: 10vh;">
+            <el-input
+              type="textarea"
+              placeholder="请输入内容"
+              v-model="textarea"
+              maxlength="140"
+              show-word-limit
+            >
+            </el-input>
+            <el-button class="mr-1 mt-1" style="display: block;float: right">发送</el-button>
+          </div>
           <div v-if="commentList.hotComments" class="second">
             <h5 class="hot text-primary">精彩评论:</h5>
             <div v-for="(item,index) in commentList.hotComments " :key="index">
@@ -106,6 +117,7 @@ export default {
   name: 'AlbumContent',
   data() {
     return {
+      textarea:'',
       id:null,
       loading: true,
       list: [],
