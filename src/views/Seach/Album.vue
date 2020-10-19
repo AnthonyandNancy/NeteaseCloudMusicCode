@@ -1,6 +1,6 @@
 <template>
   <!--  10: 专辑,-->
-  <div class="home">
+  <div class="home"   v-loading="loading">
     <h5 class="ml-3 resultCount">搜索<span class="text-primary">"{{ keywords }}"</span>,共找到  {{ list.albumCount }}  首专辑</h5>
     <div v-for="(item,index) in list.albums" :key="index" class="content border-bottom" @click="handelClickAlbum(item.id)">
 
@@ -30,7 +30,8 @@ export default {
     return {
       keywords: '',
       offset: 0,
-      list: []
+      list: [],
+      loading:true
     }
   },
   computed: {
@@ -62,6 +63,7 @@ export default {
       }
       const { result } = await Seach.getSearchHotSong(option)
       this.list = result
+      this.loading=false
       // console.log(result)
     },
     // 点击进入专辑
@@ -81,6 +83,7 @@ export default {
       }
       const { result } = await Seach.getSearchHotSong(option)
       this.list = result
+      this.loading=false
       // console.log(result)
     }
   }

@@ -1,7 +1,15 @@
 <template>
-  <div class="home">
+  <div
+    v-loading="loading"
+    class="home"
+    element-loading-text="拼命加载中"
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
     <h5 class="ml-3 resultCount">搜索<span class="text-primary">"{{ keywords }}"</span>,共找到  {{ list.songCount }}  首单曲</h5>
-    <div class="content   border-bottom border-top">
+    <div
+      class="content   border-bottom border-top"
+    >
       <!--      <el-row class="">-->
       <!--        <el-col :span="6" class="ml-5">-->
       <!--          <div class="   ">-->
@@ -27,12 +35,18 @@
       <!--        </el-col>-->
       <!--      </el-row>-->
 
-      <div class="title border-left">
+      <div
+        class="title border-left"
+      >
         <h5 class=" border-right">音乐标题</h5>
         <h5 class=" border-right ">歌手</h5>
         <h5 class=" border-right ">专辑</h5>
 
-        <div v-for="(item,index) in list.songs" :key="index" class="border-bottom border-top ">
+        <div
+          v-for="(item,index) in list.songs"
+          :key="index"
+          class="border-bottom border-top "
+        >
           <el-row>
             <el-col :span="5">
               <div class=" border-right">
@@ -49,11 +63,11 @@
 
             </el-col>
             <el-col :span="5">
-                            <div class="border-right">
-                              <div class="album ">
-                                {{item.album.name}}
-                              </div>
-                            </div>
+              <div class="border-right">
+                <div class="album ">
+                  {{ item.album.name }}
+                </div>
+              </div>
             </el-col>
           </el-row>
 
@@ -80,7 +94,8 @@ export default {
       list: [],
       keywords: '',
       // 页码
-      offset: 0
+      offset: 0,
+      loading: true
     }
   },
   computed: {
@@ -116,16 +131,19 @@ export default {
       }
       const { result } = await Seach.getSearchHotSong(option)
       this.list = result
+      this.loading = false
       // console.log(result)
     },
-    async hadelCurryPages(e){
+    async hadelCurryPages(e) {
       const option = {
         keywords: this.keywords,
         type: 1,
         offset: e
       }
       const { result } = await Seach.getSearchHotSong(option)
+
       this.list = result
+      this.loading = false
       // console.log(result)
     }
   }
