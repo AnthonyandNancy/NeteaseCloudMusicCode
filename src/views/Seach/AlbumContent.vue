@@ -103,7 +103,13 @@
           </div>
 
         </el-tab-pane>
-        <el-tab-pane label="专辑详情" name="third">角色管理</el-tab-pane>
+        <el-tab-pane label="专辑详情" name="third">
+          <h5 class="text-primary" style="text-align: left;">专辑介绍:</h5>
+          <per class="description">
+            {{list.album.description}}
+          </per>
+
+        </el-tab-pane>
       </el-tabs>
     </div>
 
@@ -367,6 +373,11 @@ export default {
           text-align: left;
           color: #757575;
         }
+      }
+      .description{
+        width: 90%;
+        text-align: left;
+        white-space:pre
       }
 
     }
