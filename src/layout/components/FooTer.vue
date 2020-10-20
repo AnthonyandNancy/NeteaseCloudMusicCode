@@ -3,11 +3,11 @@
     <el-divider />
     <div class="vue_aplayer">
       <audio ref="audio" :src="music.src" autoplay />
-      <img :src="music.imgUrl" class="img" v-if="music.imgUrl">
+      <img v-if="music.imgUrl" :src="music.imgUrl" class="img">
       <img v-if="!isPlay" class="start" :src="startIcon" @click="start">
       <img v-if="isPlay" class="start" :src="stopIcon" @click="stop">
       <div class="watchMusictime">{{ watchMusictime }}</div>
-      <progress-bar bar-color="#dc720f" :val="progress" size="medium" class="vue-simple-progress"/>
+      <progress-bar bar-color="#dc720f" :val="progress" size="medium" class="vue-simple-progress" />
       <div class="musictime">  {{ musictime }}</div>
     </div>
   </div>
@@ -68,13 +68,15 @@ export default {
       const { data } = await Footer.getMusicUrl(this.id)
       const allow = await Footer.getMusicAllow(this.id)
       if (allow.success == true) {
+        console.log(545444)
         data.map(e => {
           if (e.url) {
             this.music.src = e.url
-          } else {
-            this.$message.error(allow.message)
           }
         })
+      } else {
+        console.log('5455')
+        this.$message.error(allow.message)
       }
       // 获取音乐信息
       const { result } = await Footer.getMusicInfo(this.id)
@@ -157,7 +159,7 @@ export default {
       var musicMp3 = document.querySelector('audio')
       const timer = setInterval(() => {
         const numbers = musicMp3.currentTime / musicMp3.duration
-        let perNumber = (numbers * 100).toFixed(2)
+        const perNumber = (numbers * 100).toFixed(2)
         if (perNumber >= 100) {
           this.isStore = true
           this.progress = 0

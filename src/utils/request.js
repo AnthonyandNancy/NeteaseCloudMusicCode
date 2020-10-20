@@ -50,7 +50,7 @@ service.interceptors.response.use(
   error => {
     const { data } = error.response
     console.log(data)
-    Message.error(data.msg)
+    Message.error(data.message)
     return Promise.reject(data)
   }
 )
