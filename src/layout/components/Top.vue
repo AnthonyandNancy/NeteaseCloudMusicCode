@@ -1,10 +1,10 @@
 <template>
   <div class="nav mt--5">
-    <img :src="require('@/assets/images/logo.png')">
+    <img :src="require('@/assets/images/logo.png')" @click="GoHome">
 
     <div class="mt-3 go">
-      <el-button icon="el-icon-arrow-left" />
-      <el-button icon="el-icon-arrow-right" />
+      <el-button icon="el-icon-arrow-left" @click="go(1)" />
+      <el-button icon="el-icon-arrow-right" @click="go(-1)" />
     </div>
     <el-input
       v-model="seachValue"
@@ -24,10 +24,9 @@
 
     <!--    表的弹窗-->
     <div v-if="hotShow" class="popoverDiv">
-<!--  搜索列表-->
+      <!--  搜索列表-->
 
-
-<!--      热门列-->
+      <!--      热门列-->
       <div>
         <div class="popoverHot text-danger h5">搜索历史:</div>
 
@@ -54,7 +53,6 @@
         </ul>
 
       </div>
-
 
     </div>
 
@@ -179,6 +177,16 @@ export default {
   created() {
   },
   methods: {
+    /* logo*/
+    GoHome() {
+      this.$router.push({
+        path: '/home'
+      })
+    },
+    go(e) {
+      this.$router.go(e)
+    },
+
     /* 搜索框按下回车*/
     handelChangeSeach() {
       // console.log('搜索框按下回车')
