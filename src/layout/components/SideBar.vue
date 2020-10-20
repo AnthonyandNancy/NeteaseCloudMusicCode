@@ -1,9 +1,10 @@
 <template>
   <div class="sidebar">
     <el-menu
-      default-active="2"
+      default-active="1"
       class="el-menu-vertical-demo"
       :router="true"
+      active-text-color="red"
     >
       <div style="text-align: left;color: #42b983;font-size: small;" class="ml-2">推荐</div>
       <el-menu-item route="/home" index="1">
