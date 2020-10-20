@@ -12,8 +12,16 @@
         <div class="albumSize">专辑数:{{artistsList.artist.albumSize}}</div>
         <div class="mvSize">MV数:{{artistsList.artist.mvSize}}</div>
       </div>
-
     </div>
+    <div class="subject">
+      <div class="popularSongs border" v-if="artistsList.hotSongs">
+        <img :src='hotSongImg' alt="" class="hotSongImg">
+        <div class="popularSongs-content">
+          <h5>热门50首</h5>
+        </div>
+      </div>
+    </div>
+
 
   </div>
 </template>
@@ -28,7 +36,8 @@ export default {
       mvList: [],
       ablumList: [],
       singerInfo: [],
-      likeSinger: []
+      likeSinger: [],
+      hotSongImg:require('@/assets/images/hotSong.png')
     }
   },
   computed: {
@@ -93,6 +102,26 @@ export default {
       position: absolute;
       left: 23%;
       top: 40%;
+    }
+  }
+  .subject{
+    .popularSongs{
+      .hotSongImg{
+        width: 10%;
+        height: 10%;
+        display: inline-block;
+        margin-left: -38%;
+
+      }
+      .popularSongs-content{
+        width: 50%;
+        margin-left: 0%;
+        display: inline-block;
+        border: #242424 solid 1px;
+        h5{
+          display: inline-block;
+        }
+      }
     }
   }
 }
