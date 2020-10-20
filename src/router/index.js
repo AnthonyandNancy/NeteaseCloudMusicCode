@@ -34,6 +34,21 @@ const routes = [
       }
 
     ]
+  },
+  {
+    path: '/video',
+    name: 'Video',
+    redirect: '/video',
+    component: Layout,
+    children: [
+      {
+        path: '/video',
+        name: 'video',
+        component: () => import('../views/Video/index'),
+        meta: { title: '首页' }
+      }
+
+    ]
   }
 
 ]
