@@ -97,7 +97,7 @@ export default {
     .name{
       position: relative;
       text-align: left;
-      left: 4%;
+      left: 10%;
     }
   }
   .artistsItem:hover{

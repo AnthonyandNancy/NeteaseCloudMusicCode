@@ -64,5 +64,9 @@ Vuex思路,当我点击热门时,dispatch到action里面,action里将歌名commi
 
 新增singer页面和跳转到详情的singer页面的路由,修改了singer专属要用到的api.js,在详细页面中,写好了头部内容
 
+# 2020-10-20 13:41
+
+singer页面无改动,加快进步
+
 
 
