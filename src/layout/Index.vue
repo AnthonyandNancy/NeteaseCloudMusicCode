@@ -32,7 +32,7 @@ export default {
     height: 100vh;
   .sidebar{
     width: 13.7%;
-    height: 85vh;
+    height: 80vh;
     float: left;
   }
   .appmain{
@@ -62,7 +62,6 @@ export default {
   .footer{
     width: 100%;
     height: 8.2vh;
-    background-color: grey;
     float: left;
   }
   }

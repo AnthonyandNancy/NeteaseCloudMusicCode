@@ -47,7 +47,5 @@ export default {
 
 <style scoped lang="scss">
 .sidebar{
-  border: #242424 solid 1px;
-
 }
 </style>

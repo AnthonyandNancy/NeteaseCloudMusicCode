@@ -3,8 +3,9 @@ const getDefaultState = () => {
   return {
     keywords: null,
     ablum: null,
-    singerID:null,
-    songId:null
+    singerID: null,
+    songId: null,
+    watchMusicTime:'00:00'
   }
 }
 
@@ -23,6 +24,10 @@ const mutations = {
   },
   SET_SONG: (state, id) => {
     state.songId = id
+  },
+  SET_MUSICTIME:(state, time)=>{
+    state.watchMusicTime = time
+
   }
 
 }
@@ -40,9 +45,17 @@ const actions = {
     commit('SET_SINGER', id)
   },
   chooseSong({ commit }, id) {
+    // const list = []
+    // list.push(id)
+    // console.log('list',list,id)
     commit('SET_SONG', id)
+  },
+  watchMusicTime({ commit }, time) {
+    // const list = []
+    // list.push(id)
+    // console.log('list',list,id)
+    commit('SET_MUSICTIME', time)
   }
-
 
 }
 
