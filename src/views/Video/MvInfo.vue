@@ -149,7 +149,7 @@ export default {
     display: inline-block;
     width: 40%;
     position: relative;
-    top: 5%;
+    top: 5vh;
   }
   .introduce{
     width: 30%;
