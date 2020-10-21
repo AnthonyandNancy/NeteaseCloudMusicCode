@@ -68,19 +68,17 @@ export default {
       const { data } = await Footer.getMusicUrl(this.id)
       const allow = await Footer.getMusicAllow(this.id)
       if (allow.success == true) {
-        console.log(545444)
         data.map(e => {
           if (e.url) {
             this.music.src = e.url
           }
         })
       } else {
-        console.log('5455')
         this.$message.error(allow.message)
       }
       // 获取音乐信息
       const { songs } = await Footer.getMusicInfo(this.id)
-      console.log('获取音乐信息', songs)
+      // console.log('获取音乐信息', this.id)
       this.music.title = songs[0].name
       this.music.subTitle = '网抑云,你最好的歌声'
       this.music.imgUrl = songs[0].al.picUrl
