@@ -3,8 +3,8 @@
     <img :src="require('@/assets/images/logo.png')" @click="GoHome">
 
     <div class="mt-3 go">
-      <el-button icon="el-icon-arrow-left" @click="go(1)" />
-      <el-button icon="el-icon-arrow-right" @click="go(-1)" />
+      <el-button icon="el-icon-arrow-left" @click="go(-1)" />
+      <el-button icon="el-icon-arrow-right" @click="go(1)" />
     </div>
     <el-input
       v-model="seachValue"

@@ -75,7 +75,7 @@
             </el-input>
             <el-button class="mr-1 mt-1" style="display: block;float: right">发送</el-button>
           </div>
-          <div v-if="commentList.hotComments" class="second">
+          <div v-if="commentList.hotComments.length>0" class="second">
             <h5 class="hot text-primary">精彩评论:</h5>
             <div v-for="(item,index) in commentList.hotComments " :key="index">
 

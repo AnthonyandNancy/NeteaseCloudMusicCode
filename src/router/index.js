@@ -44,9 +44,19 @@ const routes = [
       {
         path: '/video',
         name: 'video',
-        component: () => import('../views/Video/index'),
-        meta: { title: '首页' }
+        component: () => import('../views/Video/index')
+      },
+      {
+        path: '/mv/:id',
+        name: 'MV',
+        component: () => import('../views/Video/MvInfo')
+      },
+      {
+        path: '/mv/all',
+        name: 'MVAll',
+        component: () => import('../views/Video/MvAll')
       }
+
 
     ]
   }
