@@ -14,6 +14,7 @@
         <div v-for="(item,index) in mvList.data" :key="index" class="newMv" @click="goMv(item.id)">
 
           <img :src="item.cover" alt="">
+          <div class="playCount">{{ item.playCount }}</div>
           <div class="name">{{ item.name }}</div>
           <div class="artistName ">{{ item.artistName }}</div>
 
@@ -28,6 +29,7 @@
         <div v-for="(item,index) in exclusiveMvList" :key="index" class="newMv" @click="goMv(item.id)">
 
           <img :src="item.cover" alt="">
+          <div class="playCount">{{ item.playCount }}</div>
           <div class="name">{{ item.name }}</div>
           <div class="artistName ">{{ item.artistName }}</div>
 
@@ -50,6 +52,7 @@
 
           <img :src="item.cover" alt="">
           <div class="name">{{ item.name }}</div>
+          <div class="playCount">{{ item.playCount }}</div>
           <div class="artistName ">{{ item.artistName }}</div>
 
         </div>
@@ -172,10 +175,16 @@ export default {
       margin-right: 2%;
       margin-top: 1%;
       display: inline-block;
+      position: relative;
       img{
         width: 100%;
         height: 25vh;
         display: inline-block;
+      }
+      .playCount{
+        position: absolute;
+        top: 0;
+        color: white;
       }
       .name, .artistName{
         width: 50rem;
