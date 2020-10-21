@@ -11,7 +11,7 @@ export const Footer = {
   // 获取音乐信息
   getMusicInfo: function(params) {
     return request({
-      url: `/search?keywords=${params}&type=1`,
+      url: `/song/detail?ids=${params}`,
       method: 'get'
     })
   },

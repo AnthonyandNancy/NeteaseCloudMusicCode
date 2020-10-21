@@ -79,14 +79,16 @@ export default {
         this.$message.error(allow.message)
       }
       // 获取音乐信息
-      const { result } = await Footer.getMusicInfo(this.id)
-      result.songs.map(val => {
-        if (val.id = this.id) {
-          this.music.title = val.name
-          this.music.subTitle = val.album.artist.name
-          this.music.imgUrl = val.artists[0].img1v1Url
-        }
-      })
+      const { songs } = await Footer.getMusicInfo(this.id)
+      console.log('获取音乐信息', songs)
+      this.music.title = songs[0].name
+      this.music.subTitle = '网抑云,你最好的歌声'
+      this.music.imgUrl = songs[0].al.picUrl
+      // result.songs.map(val => {
+      //   if (val.id = this.id) {
+      //
+      //   }
+      // })
       const irc = await Footer.getMusicIFC(this.id)
       this.music.lrc = irc.lrc.lyric
       this.musicTime()
