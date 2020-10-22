@@ -2,8 +2,8 @@
   <div class="home">
     <div class="carousel">
       <el-carousel :interval="4000" type="card" height="300px">
-        <el-carousel-item v-for="(item,index) in bannersList" :key="index">
-          <img :src="item.imageUrl" alt="">
+        <el-carousel-item v-for="(item,index) in bannersList" :key="index" >
+          <img :src="item.imageUrl" alt="" @click="getMusic(item.targetId)">
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -14,6 +14,7 @@
         <div v-for="(item,index) in songList" :key="index" class="songList">
           <img :src="item.picUrl" alt="">
           <p class="name">{{ item.name }}</p>
+          <p class="playCount">{{ item.playCount }}</p>
         </div>
       </div>
     </div>
@@ -58,6 +59,10 @@ export default {
       // 推荐电台
       const data = await Home.getRecommendedDjprogram()
       this.djprogramList = data.result
+    },
+    getMusic(id){
+      console.log('轮播音乐',id)
+      this.$store.dispatch('app/chooseSong',id)
     }
   }
 }
@@ -92,6 +97,7 @@ export default {
           .name{
             display: inline-block;
           }
+
         }
 
       }
@@ -116,6 +122,11 @@ export default {
         }
         .name{
           display: inline-block;
+        }
+        .playCount{
+          position: absolute;
+          left: 0;
+          top: 0;
         }
       }
     }

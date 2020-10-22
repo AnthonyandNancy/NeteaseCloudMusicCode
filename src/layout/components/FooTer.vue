@@ -180,9 +180,9 @@ export default {
 .vue_aplayer{
   .img{
     width:3%;
-    height: 3%;
+    height: 2%;
     position: relative;
-    margin-top: -1%;
+    margin-top: -1.3%;
     left: -43%;
   }
   .start{
@@ -190,14 +190,14 @@ export default {
     height: 2%;
     display: inline-block;
     position: relative;
-    margin-top: -1%;
+    margin-top: -2%;
     left: -42%;
   }
 
 }
   .vue-simple-progress{
     width: 50%;
-    margin-top: -1.3%;
+    margin-top: -2%;
     margin-left: auto;
     margin-right: auto;
   }
@@ -210,6 +210,6 @@ export default {
     display: inline-block;
     position: relative;
     right: -30%;
-    top: -1vh;
+    top: -1.5vh;
   }
 </style>
