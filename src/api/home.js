@@ -123,5 +123,23 @@ offset: 偏移数量 , 用于分页 , 如 :( 评论页数 -1)*50, 其中 50 为 
       url: `/playlist/detail?id=${params}`,
       method: 'get'
     })
-  }
+  },
+  getPlaylistComment: function(params) {
+    return request({
+      url: `/comment/playlist?id==${params}`,
+      method: 'get'
+    })
+  },
+  getCommentAlbumA: function(params) {
+    return request({
+      url: `/comment/playlist?id=${params.id}&type=${params.type}&offset=${params.offset}`,
+      method: 'get'
+    })
+  },
+  getCommentAlbumB: function(params) {
+    return request({
+      url: `/comment/playlist?id=${params.id}&offset=${params.offset}&before=${params.before}`,
+      method: 'get'
+    })
+  },
 }
