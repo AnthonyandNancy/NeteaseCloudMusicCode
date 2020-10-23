@@ -17,8 +17,9 @@
       <div class="voice">
         <img :src="voice" alt="" class="voiceimg">
         <el-slider v-model="voiclValue" @input="voiclSliderChange" />
-      </div>
 
+      </div>
+      <img :src="more" alt="" style="margin-top: -10px;margin-left: -20px;">
     </div>
   </div>
 
@@ -37,7 +38,6 @@ export default {
     return {
       id: null,
       isPlay: false,
-      progress: '0',
       startIcon: require('@/assets/images/start.png'),
       stopIcon: require('@/assets/images/stop.png'),
       music: {
@@ -49,7 +49,11 @@ export default {
       musictime: '00:00',
       watchMusictime: '00:00',
       voiclValue: 50,
-      voice: require('@/assets/images/voice.png')
+      voice: require('@/assets/images/voice.png'),
+      more: require('@/assets/images/more.png'),
+      progress: 0,
+      idList: [],
+      index: 0
 
     }
   },
@@ -59,6 +63,12 @@ export default {
     },
     watchmusictime() {
       return this.$store.getters.watchMusicTime
+    },
+    songIndex() {
+      return this.$store.getters.idindex
+    },
+    idlist() {
+      return this.$store.getters.idList
     }
   },
   watch: {
@@ -69,6 +79,16 @@ export default {
     },
     watchmusictime() {
       this.watchMusictime = this.watchmusictime
+    },
+    songIndex() {
+      this.index = this.songIndex
+      console.log(this.index)
+    },
+    progress() {
+      if (this.progress == 100) {
+        this.nextSong(this.index)
+      }
+      // console.log(this.songIndex)
     }
 
   },
@@ -183,8 +203,21 @@ export default {
     },
     voiclSliderChange(val) {
       const musicMp3 = document.querySelector('audio')
-      musicMp3.volume = val/100
+      musicMp3.volume = val / 100
       // console.log(musicMp3.volume)
+    },
+
+    // 下一首歌
+    nextSong(index) {
+      if (index + 1 == this.idlist.length) {
+        // console.log('走了了上面',  this.idlist[0])
+        this.id = this.idlist[0]
+        this.feach()
+      } else {
+        // console.log('走了了下面', index, this.idlist.length)
+        this.id = this.idlist[index + 1]
+        this.feach()
+      }
     }
   }
 }

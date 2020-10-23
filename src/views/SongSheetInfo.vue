@@ -1,12 +1,12 @@
 <template>
-  <div class="home" >
+  <div class="home">
     <div class="head">
       <img :src="playlist.coverImgUrl" alt="" class="coverImg">
       <p class="playlistgd">歌单</p>
       <p class="playlistname">{{ playlist.name }}</p>
       <p class="trackCount">歌曲数:{{ playlist.trackCount }}</p>
       <p class="playCount">播放数:{{ playlist.playCount }}</p>
-      <p class="expertTags" v-if="playlist.creator.expertTags">标签: <span  v-for="(item ,index) in playlist.creator.expertTags" :key="index">{{ item}}/</span></p>
+      <!--      <p v-if="playlist.creator.expertTags" class="expertTags">标签: <span v-for="(item ,index) in playlist.creator.expertTags" :key="index">{{ item }}/</span></p>-->
       <div class="btnGroud ">
         <el-button type="danger" icon="el-icon-caret-right">播放全部</el-button>
         <el-button icon="el-icon-circle-plus-outline"><span v-if="playlist.isSub" style="display: inline-block;">已</span>收藏({{ playlist.subscribedCount }})</el-button>
@@ -27,7 +27,7 @@
               v-for="(item,index) in playlist.tracks"
               :key="index"
               class="border-bottom border-top "
-              @click="handleClick(item.id)"
+              @click="handleClick(item.id,index)"
             >
               <el-row>
                 <el-col :span="5">
@@ -59,13 +59,12 @@
         <el-tab-pane label="评论" name="second">
           <div style="height: 10vh;">
             <el-input
+              v-model="textarea"
               type="textarea"
               placeholder="请输入内容"
-              v-model="textarea"
               maxlength="140"
               show-word-limit
-            >
-            </el-input>
+            />
             <el-button class="mr-1 mt-1" style="display: block;float: right">发送</el-button>
           </div>
           <div v-if="commentList.hotComments" class="second">
@@ -117,9 +116,16 @@ export default {
       total: 0,
       offset: 0,
       before: 0,
-      commentList:[],
-      textarea:''
+      commentList: [],
+      textarea: '',
+      idList: []
     }
+  },
+  computed: {
+
+  },
+  watch: {
+
   },
   created() {
     this.playListId = this.$route.params.id
@@ -133,9 +139,20 @@ export default {
       this.privileges = privileges
     },
     /* tabs*/
-    handleClick(id) {
+    handleClick(id, index) {
+      this.idList = []
+      this.$store.dispatch('app/setIndex', index)
       localStorage.setItem('songID', id)
       this.$store.dispatch('app/chooseSong', id)
+      this.setIDLoop()
+    },
+    // 处理id数组
+    setIDLoop() {
+      this.playlist.tracks.map(val => {
+        this.idList.push(val.id)
+      })
+      this.$store.dispatch('app/setIdList', this.idList)
+      // console.log(this.idList)
     },
     // 评论详情
     async   getCommentList(e) {
@@ -169,6 +186,7 @@ export default {
       // console.log(this.offset)
       this.getCommentList(this.$route.params.id)
     }
+
   }
 }
 </script>

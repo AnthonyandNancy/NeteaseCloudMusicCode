@@ -5,7 +5,9 @@ const getDefaultState = () => {
     ablum: null,
     singerID: null,
     songId: null,
-    watchMusicTime:'00:00'
+    watchMusicTime: '00:00',
+    idindex: 0,
+    idList:[]
   }
 }
 
@@ -25,11 +27,15 @@ const mutations = {
   SET_SONG: (state, id) => {
     state.songId = id
   },
-  SET_MUSICTIME:(state, time)=>{
+  SET_MUSICTIME: (state, time) => {
     state.watchMusicTime = time
-
+  },
+  SET_INDEX: (state, val) => {
+    state.idindex = val
+  },
+  SET_IDLIST: (state, val) => {
+    state.idList = val
   }
-
 }
 
 const actions = {
@@ -55,6 +61,13 @@ const actions = {
     // list.push(id)
     // console.log('list',list,id)
     commit('SET_MUSICTIME', time)
+  },
+  setIndex({ commit }, val) {
+    commit('SET_INDEX', val)
+  },
+  setIdList({ commit }, val) {
+    console.log(val)
+    commit('SET_IDLIST', val)
   }
 
 }
