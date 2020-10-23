@@ -7,7 +7,7 @@
       <div class="music">
         <p style="display: inline-block;float: left;margin-left: 2%;margin-top: 5%;width: 20%">{{ music.title }}</p>
         <img v-if="music.imgUrl" :src="music.imgUrl" class="img">
-        <img v-if="!isPlay" class="start" :src="startIcon" @click="start">
+        <img v-if="!isPlay && music.imgUrl" class="start" :src="startIcon" @click="start">
         <img v-if="isPlay" class="start" :src="stopIcon" @click="stop">
       </div>
 
