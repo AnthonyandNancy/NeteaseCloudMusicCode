@@ -5,7 +5,7 @@
       <audio ref="audio" :src="music.src" autoplay />
 
       <div class="music">
-        <p style="display: inline-block;float: left;margin-left: 2%;margin-top: 10%;">{{ music.title }}</p>
+        <p style="display: inline-block;float: left;margin-left: 2%;margin-top: 5%;width: 20%">{{ music.title }}</p>
         <img v-if="music.imgUrl" :src="music.imgUrl" class="img">
         <img v-if="!isPlay" class="start" :src="startIcon" @click="start">
         <img v-if="isPlay" class="start" :src="stopIcon" @click="stop">
@@ -48,7 +48,7 @@ export default {
       },
       musictime: '00:00',
       watchMusictime: '00:00',
-      voiclValue: 0.5,
+      voiclValue: 50,
       voice: require('@/assets/images/voice.png')
 
     }
@@ -236,7 +236,7 @@ export default {
     margin-top: -2vh;
     .el-slider{
       display: inline-block;
-      width: 10%;
+      width: 30%;
       margin-left: 3vh;
       margin-top: 0.5vh;
     }
