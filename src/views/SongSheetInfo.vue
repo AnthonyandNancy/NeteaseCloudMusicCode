@@ -140,7 +140,6 @@ export default {
     },
     /* tabs*/
     handleClick(id, index) {
-      this.idList = []
       this.$store.dispatch('app/setIndex', index)
       localStorage.setItem('songID', id)
       this.$store.dispatch('app/chooseSong', id)
@@ -148,6 +147,7 @@ export default {
     },
     // 处理id数组
     setIDLoop() {
+      this.idList = []
       this.playlist.tracks.map(val => {
         this.idList.push(val.id)
       })
