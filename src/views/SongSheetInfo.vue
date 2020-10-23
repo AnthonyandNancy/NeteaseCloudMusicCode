@@ -8,7 +8,7 @@
       <p class="playCount">播放数:{{ playlist.playCount }}</p>
       <!--      <p v-if="playlist.creator.expertTags" class="expertTags">标签: <span v-for="(item ,index) in playlist.creator.expertTags" :key="index">{{ item }}/</span></p>-->
       <div class="btnGroud ">
-        <el-button type="danger" icon="el-icon-caret-right">播放全部</el-button>
+        <el-button type="danger" icon="el-icon-caret-right" @click="handalPlayAll">播放全部</el-button>
         <el-button icon="el-icon-circle-plus-outline"><span v-if="playlist.isSub" style="display: inline-block;">已</span>收藏({{ playlist.subscribedCount }})</el-button>
         <el-button icon="el-icon-share">分享({{ playlist.shareCount }})</el-button>
       </div>
@@ -185,6 +185,13 @@ export default {
       this.offset = e
       // console.log(this.offset)
       this.getCommentList(this.$route.params.id)
+    },
+    handalPlayAll() {
+      const id = this.playlist.tracks[0].id
+      this.$store.dispatch('app/setIndex', 0)
+      localStorage.setItem('songID', id)
+      this.$store.dispatch('app/chooseSong', id)
+      this.setIDLoop()
     }
 
   }
