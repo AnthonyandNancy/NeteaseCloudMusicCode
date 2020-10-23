@@ -11,7 +11,7 @@
       <div class="content">
         <h5 style="text-align: left;">推荐歌单</h5>
         <el-divider />
-        <div v-for="(item,index) in songList" :key="index" class="songList">
+        <div v-for="(item,index) in songList" :key="index" class="songList" @click="handalGoPlayListInfo(item.id)">
           <img :src="item.picUrl" alt="">
           <p class="name">{{ item.name }}</p>
           <p class="playCount">{{ item.playCount }}</p>
@@ -61,8 +61,13 @@ export default {
       this.djprogramList = data.result
     },
     getMusic(id){
-      console.log('轮播音乐',id)
+      // console.log('轮播音乐',id)
       this.$store.dispatch('app/chooseSong',id)
+    },
+    async handalGoPlayListInfo(val){
+      this.$router.push({
+        path:`/SongSheetInfo/${val}`
+      })
     }
   }
 }
@@ -123,12 +128,16 @@ export default {
         .name{
           display: inline-block;
         }
-        .playCount{
-          position: absolute;
-          left: 0;
-          top: 0;
-        }
+
       }
+
+    }
+    .playCount{
+      background-color: rgba(1,1,1,0.5);
+      position: absolute;
+      color: white;
+      right: 0;
+      top: 0;
     }
   }
 

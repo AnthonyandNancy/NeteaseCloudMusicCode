@@ -31,6 +31,11 @@ const routes = [
         path: '/seach/SingerContent',
         name: 'AlbumContent',
         component: () => import('../views/Seach/SingerContent')
+      },
+      {
+        path: '/SongSheetInfo/:id',
+        name: 'SongSheetInfo',
+        component: () => import('../views/SongSheetInfo')
       }
 
     ]

@@ -3,6 +3,7 @@
     <el-divider />
     <div class="vue_aplayer">
       <audio ref="audio" :src="music.src" autoplay />
+      <p style="display: inline-block;float: left;margin-left: 2%;">{{music.title}}</p>
       <img v-if="music.imgUrl" :src="music.imgUrl" class="img">
       <img v-if="!isPlay" class="start" :src="startIcon" @click="start">
       <img v-if="isPlay" class="start" :src="stopIcon" @click="stop">

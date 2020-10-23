@@ -116,5 +116,12 @@ offset: 偏移数量 , 用于分页 , 如 :( 评论页数 -1)*50, 其中 50 为 
       url: `/top/playlist?order=hot&cat=${params.cat}&offset=${params.offset}`,
       method: 'get'
     })
+  },
+
+  getPlaylistInfo: function(params) {
+    return request({
+      url: `/playlist/detail?id=${params}`,
+      method: 'get'
+    })
   }
 }
