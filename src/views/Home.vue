@@ -8,10 +8,10 @@
       <el-tab-pane label="歌单" name="second">
         <song-sheet></song-sheet>
       </el-tab-pane>
-      <el-tab-pane label="主播电台" name="third">配置管理</el-tab-pane>
-      <el-tab-pane label="歌手" name="fourth">角色管理</el-tab-pane>
-      <el-tab-pane label="排行榜" name="five">定时任务补偿</el-tab-pane>
-      <el-tab-pane label="最新音乐" name="six">定时任务补偿</el-tab-pane>
+<!--      <el-tab-pane label="主播电台" name="third">配置管理</el-tab-pane>-->
+<!--      <el-tab-pane label="歌手" name="fourth">角色管理</el-tab-pane>-->
+<!--      <el-tab-pane label="排行榜" name="five">定时任务补偿</el-tab-pane>-->
+      <el-tab-pane label="最新音乐" name="six">最新音乐</el-tab-pane>
     </el-tabs>
 
   </div>
