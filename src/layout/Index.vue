@@ -86,7 +86,7 @@ export default {
   methods: {
     async feach(id) {
       const { lrc } = await Song.getSongLyric(id)
-      // this.lrc = lrc.lyric
+      this.lrc = []
       // console.log(lrc.lyric)
       this.processingLyrics(lrc.lyric)
     },
