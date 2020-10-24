@@ -88,11 +88,12 @@ export default {
         margin: 0 auto;
         .songList{
           width: 12%;
-          height: 20%;
-          position: relative;
+          height: 25%;
+          flex-wrap: wrap;
           display: inline-block;
           margin-left: 2%;
           margin-top: 2%;
+          text-align: left;
           img{
             width: 100%;
             height: 80%;
