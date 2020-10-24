@@ -19,7 +19,25 @@
         <el-slider v-model="voiclValue" @input="voiclSliderChange" />
 
       </div>
-      <img :src="more" alt="" style="margin-top: -10px;margin-left: -20px;">
+      <el-popover
+        placement="right"
+        width="400"
+        trigger="click"
+      >
+        <div>
+          <ul>
+            <li v-for="(item,index) in playlist" :key="index" class="list-unstyled mb-2" style="display: flex;flex-wrap: wrap;" :class="{'songIsAcyived':songIndex==index}" @click="handalClickGoSong(item.id,index)">
+              <div style="width: 40%;">   {{item.name}}</div>
+
+              <div v-for="(ar,arindex) in item.ar" :key="arindex" style=" display:inline-block;text-align: right;">
+                <div style="display:inline-block;" v-if="item.ar.length>1">/</div>{{ar.name}}
+            </div>
+            </li>
+          </ul>
+        </div>
+        <img slot="reference" :src="more" alt="" style="margin-top: -10px;margin-left: -20px;">
+      </el-popover>
+
     </div>
   </div>
 
@@ -28,6 +46,7 @@
 <script>
 import { Footer } from '@/api/footer'
 import ProgressBar from 'vue-simple-progress'
+import { Home } from '../../api/home'
 
 export default {
   name: 'FooTer',
@@ -53,7 +72,9 @@ export default {
       more: require('@/assets/images/more.png'),
       progress: 0,
       idList: [],
-      index: 0
+      index: 0,
+      playlist: [],
+      privileges: []
 
     }
   },
@@ -69,6 +90,9 @@ export default {
     },
     idlist() {
       return this.$store.getters.idList
+    },
+    songSheetId() {
+      return this.$store.getters.songSheetID
     }
   },
   watch: {
@@ -89,11 +113,15 @@ export default {
         this.nextSong(this.index)
       }
       // console.log(this.songIndex)
+    },
+    songSheetId() {
+      console.log(this.songSheetId)
+      this.getSongSheetID(this.songSheetId)
     }
 
   },
   mounted() {
-
+    this.getSongSheetID(this.songSheetId)
   },
   methods: {
     async  feach() {
@@ -218,12 +246,36 @@ export default {
         this.id = this.idlist[index + 1]
         this.feach()
       }
-    }
+    },
+    // 底部歌单目录
+    async getSongSheetID(id) {
+      const { playlist } = await Home.getPlaylistInfo(id)
+      // console.log(playlist.tracks,'----------')
+      this.playlist = playlist.tracks
+    },
+    handalClickGoSong(id,index){
+      this.$store.dispatch('app/setIndex', index)
+      localStorage.setItem('songID', id)
+      this.$store.dispatch('app/chooseSong', id)
+      this.setIDLoop()
+    },
+    // 处理id数组
+    setIDLoop() {
+      this.idList = []
+      this.playlist.tracks.map(val => {
+        this.idList.push(val.id)
+      })
+      this.$store.dispatch('app/setIdList', this.idList)
+      // console.log(this.idList)
+    },
   }
 }
 </script>
 
 <style scoped lang="scss">
+  .songIsAcyived{
+    color: red;
+  }
   .home{
     height: 20vh;
   }

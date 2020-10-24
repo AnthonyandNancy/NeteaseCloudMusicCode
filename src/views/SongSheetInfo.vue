@@ -144,6 +144,8 @@ export default {
       localStorage.setItem('songID', id)
       this.$store.dispatch('app/chooseSong', id)
       this.setIDLoop()
+      // 将歌单id分发到store里面去
+      this.$store.dispatch('app/setSongSheetID', this.$route.params.id)
     },
     // 处理id数组
     setIDLoop() {
@@ -175,7 +177,8 @@ export default {
         }
         const commentList = await Home.getCommentAlbumA(option)
         if (commentList.total > 5000) {
-          this.before = this.commentList.comments[19].time
+          const length = commentList.comments.length - 1
+          this.before = commentList.comments[length].time
         }
         this.total = commentList.total
         this.commentList = commentList

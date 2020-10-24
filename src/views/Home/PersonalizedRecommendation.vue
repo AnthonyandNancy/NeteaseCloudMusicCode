@@ -2,7 +2,7 @@
   <div class="home">
     <div class="carousel">
       <el-carousel :interval="4000" type="card" height="300px">
-        <el-carousel-item v-for="(item,index) in bannersList" :key="index" >
+        <el-carousel-item v-for="(item,index) in bannersList" :key="index">
           <img :src="item.imageUrl" alt="" @click="getMusic(item.targetId)">
         </el-carousel-item>
       </el-carousel>
@@ -60,13 +60,14 @@ export default {
       const data = await Home.getRecommendedDjprogram()
       this.djprogramList = data.result
     },
-    getMusic(id){
+    getMusic(id) {
       // console.log('轮播音乐',id)
-      this.$store.dispatch('app/chooseSong',id)
+      this.$store.dispatch('app/chooseSong', id)
     },
-    async handalGoPlayListInfo(val){
+    // 跳转到歌单页面
+    async handalGoPlayListInfo(val) {
       this.$router.push({
-        path:`/SongSheetInfo/${val}`
+        path: `/SongSheetInfo/${val}`
       })
     }
   }

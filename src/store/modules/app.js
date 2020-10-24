@@ -7,7 +7,8 @@ const getDefaultState = () => {
     songId: null,
     watchMusicTime: '00:00',
     idindex: 0,
-    idList:[]
+    idList: [],
+    songSheetID: 5058038668
   }
 }
 
@@ -35,6 +36,9 @@ const mutations = {
   },
   SET_IDLIST: (state, val) => {
     state.idList = val
+  },
+  SET_SONGSHEETID: (state, val) => {
+    state.songSheetID = val
   }
 }
 
@@ -66,8 +70,12 @@ const actions = {
     commit('SET_INDEX', val)
   },
   setIdList({ commit }, val) {
-    console.log(val)
+    // console.log(val)val
     commit('SET_IDLIST', val)
+  },
+  setSongSheetID({ commit }, val) {
+    console.log(val)
+    commit('SET_SONGSHEETID', val)
   }
 
 }
