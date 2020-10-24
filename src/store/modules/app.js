@@ -8,7 +8,9 @@ const getDefaultState = () => {
     watchMusicTime: '00:00',
     idindex: 0,
     idList: [],
-    songSheetID: 5058038668
+    songSheetID: 5058038668,
+    showStatus: false,
+    LrcTime:0
   }
 }
 
@@ -39,7 +41,14 @@ const mutations = {
   },
   SET_SONGSHEETID: (state, val) => {
     state.songSheetID = val
+  },
+  SET_SHOWSTATUS: (state, val) => {
+    state.showStatus = val
+  },
+  SET_LRCTIME: (state, val) => {
+    state.LrcTime = val
   }
+
 }
 
 const actions = {
@@ -61,9 +70,6 @@ const actions = {
     commit('SET_SONG', id)
   },
   watchMusicTime({ commit }, time) {
-    // const list = []
-    // list.push(id)
-    // console.log('list',list,id)
     commit('SET_MUSICTIME', time)
   },
   setIndex({ commit }, val) {
@@ -74,8 +80,16 @@ const actions = {
     commit('SET_IDLIST', val)
   },
   setSongSheetID({ commit }, val) {
-    console.log(val)
+    // console.log(val)
     commit('SET_SONGSHEETID', val)
+  },
+  setShowStatus({ commit }, val) {
+    // console.log(val)
+    commit('SET_SHOWSTATUS', val)
+  },
+  setLrcTime({ commit }, val) {
+    // console.log(val)
+    commit('SET_LRCTIME', val)
   }
 
 }

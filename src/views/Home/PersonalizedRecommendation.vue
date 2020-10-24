@@ -89,6 +89,7 @@ export default {
         .songList{
           width: 12%;
           height: 25%;
+          position: relative;
           flex-wrap: wrap;
           display: inline-block;
           margin-left: 2%;

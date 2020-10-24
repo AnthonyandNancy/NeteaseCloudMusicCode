@@ -2,7 +2,12 @@
   <div class="home">
     <el-divider />
     <div class="vue_aplayer">
+
       <audio ref="audio" :src="music.src" autoplay />
+      <transition name="el-zoom-in-center">
+        <img v-if="!showSongInfo &&id" :src="inMore" alt="" class="inMore border" @click="showSong(true)">
+        <img v-if="showSongInfo &&id" :src="outMore" alt="" class="inMore border" @click="showSong(false)">
+      </transition>
 
       <div class="music">
         <p style="display: inline-block;float: left;margin-left: 2%;margin-top: 5%;width: 20%">{{ music.title }}</p>
@@ -27,11 +32,11 @@
         <div>
           <ul>
             <li v-for="(item,index) in playlist" :key="index" class="list-unstyled mb-2" style="display: flex;flex-wrap: wrap;" :class="{'songIsAcyived':songIndex==index}" @click="handalClickGoSong(item.id,index)">
-              <div style="width: 40%;">   {{item.name}}</div>
+              <div style="width: 40%;">   {{ item.name }}</div>
 
               <div v-for="(ar,arindex) in item.ar" :key="arindex" style=" display:inline-block;text-align: right;">
-                <div style="display:inline-block;" v-if="item.ar.length>1">/</div>{{ar.name}}
-            </div>
+                <div v-if="item.ar.length>1" style="display:inline-block;">/</div>{{ ar.name }}
+              </div>
             </li>
           </ul>
         </div>
@@ -74,8 +79,10 @@ export default {
       idList: [],
       index: 0,
       playlist: [],
-      privileges: []
-
+      privileges: [],
+      inMore: require('@/assets/images/large.png'),
+      outMore: require('@/assets/images/small.png'),
+      showSongInfo: false
     }
   },
   computed: {
@@ -106,7 +113,7 @@ export default {
     },
     songIndex() {
       this.index = this.songIndex
-      console.log(this.index)
+      // console.log(this.index)
     },
     progress() {
       if (this.progress == 100) {
@@ -115,7 +122,7 @@ export default {
       // console.log(this.songIndex)
     },
     songSheetId() {
-      console.log(this.songSheetId)
+      // console.log(this.songSheetId)
       this.getSongSheetID(this.songSheetId)
     }
 
@@ -124,7 +131,16 @@ export default {
     this.getSongSheetID(this.songSheetId)
   },
   methods: {
+    // 左下角按钮
+    showSong(val) {
+      // console.log(val)
+      this.showSongInfo = val
+      this.$store.dispatch('app/setShowStatus', val)
+    },
     async  feach() {
+      localStorage.setItem('songID', this.id)
+      this.$store.dispatch('app/chooseSong', this.id)
+
       const { data } = await Footer.getMusicUrl(this.id)
       const allow = await Footer.getMusicAllow(this.id)
       if (allow.success == true) {
@@ -172,7 +188,7 @@ export default {
         seconds = '0' + seconds
       }
       this.musictime = minutes + '：' + seconds
-      console.log('处理音乐时长', minutes + '：' + seconds)
+      // console.log('处理音乐时长', minutes + '：' + seconds)
     },
 
     // 监听音乐实时播放的时间
@@ -200,6 +216,7 @@ export default {
           seconds = '0' + seconds
         }
         const time = minutes + ':' + seconds
+        _this.$store.dispatch('app/setLrcTime', seconds)// 将实时时间存储到vuex中
         _this.$store.dispatch('app/watchMusicTime', time)// 将实时时间存储到vuex中
         // console.log(minutes + ':' + seconds)
       }, false)
@@ -217,6 +234,7 @@ export default {
     },
     changeProgress() {
       const musicMp3 = document.querySelector('audio')
+
       const timer = setInterval(() => {
         const numbers = musicMp3.currentTime / musicMp3.duration
         const perNumber = (numbers * 100).toFixed(2)
@@ -225,6 +243,7 @@ export default {
           this.progress = 0
           clearInterval(timer)
         }
+
         // perNumber += '%'
         this.progress = perNumber
       }, 30)
@@ -253,7 +272,7 @@ export default {
       // console.log(playlist.tracks,'----------')
       this.playlist = playlist.tracks
     },
-    handalClickGoSong(id,index){
+    handalClickGoSong(id, index) {
       this.$store.dispatch('app/setIndex', index)
       localStorage.setItem('songID', id)
       this.$store.dispatch('app/chooseSong', id)
@@ -267,12 +286,19 @@ export default {
       })
       this.$store.dispatch('app/setIdList', this.idList)
       // console.log(this.idList)
-    },
+    }
   }
 }
 </script>
 
 <style scoped lang="scss">
+  .inMore{
+    width: 4vh;
+    height: 4vh;
+    position: relative;
+    top: -1.5vh;
+    left: 2%;
+  }
   .songIsAcyived{
     color: red;
   }

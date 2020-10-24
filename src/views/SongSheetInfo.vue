@@ -195,6 +195,8 @@ export default {
       localStorage.setItem('songID', id)
       this.$store.dispatch('app/chooseSong', id)
       this.setIDLoop()
+      // 将歌单id分发到store里面去
+      this.$store.dispatch('app/setSongSheetID', this.$route.params.id)
     }
 
   }

@@ -6,7 +6,9 @@ const getters = {
   watchMusicTime: state => state.app.watchMusicTime,
   idindex: state => state.app.idindex,
   idList: state => state.app.idList,
-  songSheetID: state => state.app.songSheetID
+  songSheetID: state => state.app.songSheetID,
+  LrcTime: state => state.app.LrcTime,
+  showStatus: state => state.app.showStatus
 
 }
 export default getters
