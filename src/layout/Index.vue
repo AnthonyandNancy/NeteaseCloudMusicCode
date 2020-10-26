@@ -9,7 +9,7 @@
     <transition name="el-zoom-in-bottom">
       <div v-if="show" class="transition-box">
         <div class="transition-boxHead">
-          <img :src=" songInfo.al.picUrl" alt="" class="songInfoImg">
+          <img v-if="songInfo.al.picUrl" :src=" songInfo.al.picUrl" alt="" class="songInfoImg">
 
           <h2 class="songTitle">{{ songInfo.name }}
             <span style="border-radius: 2px;width: 20px;color: white;background-color: red;">全损音质</span>
@@ -122,6 +122,7 @@ export default {
     showLfcStatus() {
       this.show = this.showLfcStatus
       // this.musicInfo()
+      this.resolveTime(this.lrctime)
     },
     songID() {
       this.id = this.songID
@@ -131,13 +132,14 @@ export default {
       const second = (this.getMusictime) % 60
       const seconds = Math.round(second)
       this.lrctime = seconds
-      this.resolveTime(seconds)
+
       // console.log(this.lrctime)
     }
   },
   created() {
     if (this.id) {
       this.feach(this.songID)
+      // console.log(this.songID)
     }
   },
   mounted() {
@@ -150,9 +152,9 @@ export default {
       this.lrc = []
       // console.log(lrc.lyric)
       this.processingLyrics(lrc.lyric)
-      //相似歌曲
-      const simitSong=await Song.getSongSimis(id)
-      console.log(simitSong)
+      // 相似歌曲
+      // const simitSong=await Song.getSongSimis(id)
+      // console.log(simitSong)
 
       const { songs } = await Footer.getMusicInfo(id)
       this.songInfo = songs[0]
@@ -214,7 +216,7 @@ export default {
         }
       }
       this.lrc = lrcObj
-      console.log(lrcObj)
+      // console.log(lrcObj)
       // return lrcObj;
     },
     resolveTime(seconds) {
