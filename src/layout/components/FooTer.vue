@@ -164,7 +164,12 @@ export default {
       //   }
       // })
       const irc = await Footer.getMusicIFC(this.id)
-      this.music.lrc = irc.lrc.lyric
+      if (irc.lrc) {
+        this.music.lrc = irc.lrc.lyric
+      } else {
+        this.music.lrc = `[00:00:00] 没有歌词哦`
+      }
+
       this.musicTime()
       this.changeProgress()
       this.watchMusicTime()

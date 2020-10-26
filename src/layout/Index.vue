@@ -9,7 +9,7 @@
     <transition name="el-zoom-in-bottom">
       <div v-if="show" class="transition-box">
         <div class="transition-boxHead">
-          <img v-if="songInfo.al.picUrl" :src=" songInfo.al.picUrl" alt="" class="songInfoImg">
+          <img v-if="songInfo.al" :src=" songInfo.al.picUrl" alt="" class="songInfoImg">
 
           <h2 class="songTitle">{{ songInfo.name }}
             <span style="border-radius: 2px;width: 20px;color: white;background-color: red;">全损音质</span>
@@ -150,8 +150,15 @@ export default {
     async feach(id) {
       const { lrc } = await Song.getSongLyric(id)
       this.lrc = []
-      // console.log(lrc.lyric)
-      this.processingLyrics(lrc.lyric)
+      // console.log(lrc)
+      if (lrc) {
+
+        this.processingLyrics(lrc.lyric)
+      } else {
+
+        this.processingLyrics(`[00:00:00] 没有歌词哦`)
+      }
+
       // 相似歌曲
       // const simitSong=await Song.getSongSimis(id)
       // console.log(simitSong)
