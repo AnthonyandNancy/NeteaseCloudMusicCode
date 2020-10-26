@@ -8,18 +8,16 @@
 
     <transition name="el-zoom-in-bottom">
       <div v-if="show" class="transition-box">
-        <pre>
 
-          <div style="overflow:auto;height: 50vh;margin: 10% auto;width: 50%; " class="overflowLrc">
-             <ul>
-               <li v-for="(item,index) in lrc" :key="index" class="list-unstyled" :class="{'isLrcAcived':resolveTime(lrctime)==item.time}">
-<!--               <li v-for="(item,index) in lrc" :key="index" class="list-unstyled">-->
-                 {{ item.content }}
+        <br>  <br>  <br>
 
-               </li>
-             </ul>
-          </div>
-        </pre>
+        <ul ref="overflowLrc" class="overflowLrc">
+          <li v-for="(item,index) in lrc" :key="index" ref="lrc_ul" class="list-unstyled lrcLi" :class="{'isLrcAcived':resolveTime(lrctime)==item.time}" style="overflow:auto">
+            <!--               <li v-for="(item,index) in lrc" :key="index" class="list-unstyled">-->
+            {{ item.content }}
+
+          </li>
+        </ul>
 
       </div>
     </transition>
@@ -48,7 +46,8 @@ export default {
       show: false,
       id: null,
       lrc: {},
-      lrctime: null
+      lrctime: null,
+      idnex: 0
     }
   },
   computed: {
@@ -83,6 +82,10 @@ export default {
       this.feach(this.songID)
     }
   },
+  mounted() {
+    window.addEventListener('scroll', this.resolvescrollTop)
+  },
+
   methods: {
     async feach(id) {
       const { lrc } = await Song.getSongLyric(id)
@@ -120,25 +123,51 @@ export default {
         if ((i - 1) > 0 && !(i + 1) < obj.length) {
           if (obj[i - 1].time < seconds && seconds < obj[i + 1].time) {
             // console.log('1>>', i)
+            this.resolvescrollTop(i)
             return obj[i].time
           }
         }
       }
+    },
+    // 处理滚动条
+    resolvescrollTop(i) {
+      const lyricList = this.$refs.overflowLrc
+      // const child = document.querySelector('.isLrcAcived')
+      const child = lyricList.children[i]
+      // console.log(child)
+      const top = child.offsetTop - lyricList.clientHeight / 2
+      // console.log(top)
+      lyricList.scrollTo({
+        top,
+        behavior: 'smooth'
+      })
     }
+
   }
 
 }
 </script>
 
 <style scoped lang="scss">
+  .overflowLrc::-webkit-scrollbar{
+    display: none;
+  }
+  .overflowLrc{
+    overflow:auto;
+    height: 60vh;
+    margin: 1% auto;
+    width: 50%;
+    color: #42b983;
+  }
 .isLrcAcived{
   color: red;
 }
   .transition-box {
     width: 100%;
-    height: 100vh;
+    height: 70vh;
     margin: 0 auto;
     pre{
+      height: 50vh;
       white-space:pre-line;
       color: #42b983;
     }

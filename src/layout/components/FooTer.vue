@@ -259,10 +259,12 @@ export default {
       if (index + 1 == this.idlist.length) {
         // console.log('走了了上面',  this.idlist[0])
         this.id = this.idlist[0]
+        this.index = 0
         this.feach()
       } else {
         // console.log('走了了下面', index, this.idlist.length)
         this.id = this.idlist[index + 1]
+        this.index = index + 1
         this.feach()
       }
     },
