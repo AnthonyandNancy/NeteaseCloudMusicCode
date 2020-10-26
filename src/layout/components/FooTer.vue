@@ -317,7 +317,7 @@ export default {
   position: fixed;
   width: 30vh;
   height: 10vh;
-  top: 83vh;
+  top: 50vh;
   left: 1vh;
   img{
     width:30%;
