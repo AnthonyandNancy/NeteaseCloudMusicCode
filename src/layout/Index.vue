@@ -7,7 +7,7 @@
     </div>
 
     <transition name="el-zoom-in-bottom">
-      <div v-if="show" class="transition-box">
+      <div v-show="show" class="transition-box">
         <div class="transition-boxHead">
           <img v-if="songInfo.al" :src=" songInfo.al.picUrl" alt="" class="songInfoImg">
 
@@ -121,8 +121,10 @@ export default {
   watch: {
     showLfcStatus() {
       this.show = this.showLfcStatus
+      const second = (this.getMusictime) % 60
+      const seconds = Math.round(second)
       // this.musicInfo()
-      this.resolveTime(this.lrctime)
+      this.resolveTime(seconds)
     },
     songID() {
       this.id = this.songID
