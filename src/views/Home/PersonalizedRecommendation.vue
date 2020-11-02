@@ -11,19 +11,24 @@
       <div class="content">
         <h5 style="text-align: left;">推荐歌单</h5>
         <el-divider />
-        <div v-for="(item,index) in songList" :key="index" class="songList" @click="handalGoPlayListInfo(item.id)">
-          <img :src="item.picUrl" alt="">
-          <p class="name">{{ item.name }}</p>
-          <p class="playCount">{{ item.playCount }}</p>
+        <div class="songListFather">
+          <div v-for="(item,index) in songList" :key="index" class="songList" @click="handalGoPlayListInfo(item.id)">
+            <img :src="item.picUrl" alt="">
+            <p class="name">{{ item.name }}</p>
+            <p class="playCount">{{ item.playCount }}</p>
+          </div>
         </div>
+
       </div>
     </div>
     <div class="djprogramList">
       <h5 style="text-align: left;">推荐电台</h5>
       <el-divider />
-      <div v-for="(item,index) in djprogramList" :key="index" class="songList">
-        <img :src="item.program.blurCoverUrl" alt="">
-        <p class="name">{{ item.name }}</p>
+      <div class="songListFather">
+        <div v-for="(item,index) in djprogramList" :key="index" class="songList">
+          <img :src="item.program.blurCoverUrl" alt="">
+          <p class="name">{{ item.name }}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -86,26 +91,28 @@ export default {
       .content{
         width: 95%;
         margin: 0 auto;
-        .songList{
-          width: 12%;
-          height: 25%;
-          position: relative;
+        .songListFather{
+          display: flex;
           flex-wrap: wrap;
-          display: inline-block;
-          margin-left: 2%;
-          margin-top: 2%;
-          text-align: left;
-          img{
-            width: 100%;
-            height: 80%;
-            border-radius: 2%;
-            margin: 0 auto;
-            display: inline-block;
-          }
-          .name{
-            display: inline-block;
-          }
+          .songList{
+            width: 12%;
+            height: 25%;
+            position: relative;
+            margin-left: 2%;
+            margin-top: 2%;
+            text-align: left;
+            img{
+              width: 100%;
+              height: 100%;
+              border-radius: 2%;
+              margin: 0 auto;
+              display: inline-block;
+            }
+            .name{
+              display: inline-block;
+            }
 
+          }
         }
 
       }
@@ -116,6 +123,9 @@ export default {
       width: 100%;
       margin-left: auto;
       margin-right: auto;
+      .songListFather{
+        display: flex;
+        flex-wrap: wrap;
       .songList{
         width: 12%;
         height: 20%;
@@ -132,6 +142,7 @@ export default {
           display: inline-block;
         }
 
+      }
       }
 
     }
