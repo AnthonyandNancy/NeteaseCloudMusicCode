@@ -146,6 +146,7 @@ export default {
     window.addEventListener('scroll', this.resolvescrollTop)
   },
 
+
   methods: {
     async feach(id) {
       const { lrc } = await Song.getSongLyric(id)
