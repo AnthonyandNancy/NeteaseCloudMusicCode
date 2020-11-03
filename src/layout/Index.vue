@@ -121,10 +121,8 @@ export default {
   watch: {
     showLfcStatus() {
       this.show = this.showLfcStatus
-      const second = (this.getMusictime) % 60
-      const seconds = Math.round(second)
       // this.musicInfo()
-      this.resolveTime(seconds)
+      this.resolveTime(this.lrctime)
     },
     songID() {
       this.id = this.songID
