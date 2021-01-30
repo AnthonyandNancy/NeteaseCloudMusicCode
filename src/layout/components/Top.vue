@@ -17,10 +17,10 @@
       <i slot="prefix" class="el-input__icon el-icon-search" />
     </el-input>
 
-    <div class="ml-auto mt-3 mr-5 " @click="handelShowLogin">
+    <!-- <div class="ml-auto mt-3 mr-5 " @click="handelShowLogin">
       <el-button icon="el-icon-s-custom" />
       <span class="text-light">{{ loginStatus }}</span>
-    </div>
+    </div> -->
 
     <!--    表的弹窗-->
     <div v-if="hotShow" class="popoverDiv">
@@ -57,7 +57,7 @@
     </div>
 
     <!--    登录界面-->
-    <el-dialog
+    <!-- <el-dialog
       :title="loginTitle"
       :visible.sync="dialogVisible"
       width="30%"
@@ -138,7 +138,7 @@
           <button @click="handelLogin">{{ loginTitle }}</button>
         </div>
       </div>
-    </el-dialog>
+    </el-dialog> -->
 
   </div>
 </template>

@@ -1,104 +1,124 @@
 <template>
   <div class="home">
-    <div class="head">
-      <img :src="playlist.coverImgUrl" alt="" class="coverImg">
-      <p class="playlistgd">歌单</p>
-      <p class="playlistname">{{ playlist.name }}</p>
-      <p class="trackCount">歌曲数:{{ playlist.trackCount }}</p>
-      <p class="playCount">播放数:{{ playlist.playCount }}</p>
-      <!--      <p v-if="playlist.creator.expertTags" class="expertTags">标签: <span v-for="(item ,index) in playlist.creator.expertTags" :key="index">{{ item }}/</span></p>-->
-      <div class="btnGroud ">
-        <el-button type="danger" icon="el-icon-caret-right" @click="handalPlayAll">播放全部</el-button>
-        <el-button icon="el-icon-circle-plus-outline"><span v-if="playlist.isSub" style="display: inline-block;">已</span>收藏({{ playlist.subscribedCount }})</el-button>
-        <el-button icon="el-icon-share">分享({{ playlist.shareCount }})</el-button>
+    <div v-if="loading">
+      <loading />
+    </div>
+    <div v-if="!loading">
+      <div class="head">
+        <img :src="playlist.coverImgUrl" alt="" class="coverImg">
+        <div>
+          <p class="playlistgd">歌单</p>
+          <p class="playlistname">{{ playlist.name }}</p>
+        </div>
+
+        <p class="trackCount">歌曲数:{{ playlist.trackCount }}</p>
+        <p class="playCount">播放数:{{ playlist.playCount }}</p>
+        <!--      <p v-if="playlist.creator.expertTags" class="expertTags">标签: <span v-for="(item ,index) in playlist.creator.expertTags" :key="index">{{ item }}/</span></p>-->
+        <div class="btnGroud">
+          <el-button
+            type="danger"
+            icon="el-icon-caret-right"
+            @click="handalPlayAll"
+          >播放全部</el-button>
+          <el-button
+            icon="el-icon-circle-plus-outline"
+          ><span v-if="playlist.isSub" style="display: inline-block">已</span>收藏({{
+            playlist.subscribedCount
+          }})</el-button>
+          <el-button icon="el-icon-share">分享({{ playlist.shareCount }})</el-button>
+        </div>
+      </div>
+      <div class="body">
+        <el-tabs v-model="activeName">
+          <el-tab-pane label="歌曲列表" name="first">
+            <div class="title border-left">
+              <h5 class="border-right">音乐标题</h5>
+              <h5 class="border-right">歌手</h5>
+              <h5 class="border-right">专辑</h5>
+
+              <div
+                v-for="(item, index) in playlist.tracks"
+                :key="index"
+                class="border-bottom border-top"
+                @click="handleClick(item.id, index)"
+              >
+                <el-row>
+                  <el-col :span="5">
+                    <div class="border-right">
+                      <h6 class="name text-primary">{{ item.name }}</h6>
+                    </div>
+                  </el-col>
+                  <el-col :span="5">
+                    <div class="border-right">
+                      <div
+                        v-for="(artistsItem, artistsIndex) in item.ar"
+                        :key="artistsIndex"
+                        class="singer mr-auto"
+                      >
+                        {{ artistsItem.name }}
+                      </div>
+                    </div>
+                  </el-col>
+                  <el-col :span="5">
+                    <div class="border-right">
+                      <div class="album">
+                        {{ item.al.name }}
+                      </div>
+                    </div>
+                  </el-col>
+                </el-row>
+              </div>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="评论" name="second">
+            <div style="height: 10vh">
+              <el-input
+                v-model="textarea"
+                type="textarea"
+                placeholder="请输入内容"
+                maxlength="140"
+                show-word-limit
+              />
+              <el-button
+                class="mr-1 mt-1"
+                style="display: block; float: right"
+              >发送</el-button>
+            </div>
+            <div v-if="commentList.hotComments" class="second">
+              <h5 class="hot text-primary">精彩评论:</h5>
+              <div v-for="(item, index) in commentList.hotComments" :key="index">
+                <img :src="item.user.avatarUrl" alt="" class="hotimg">
+                <div class="nickname">
+                  <span class="text-primary">{{ item.user.nickname }}</span>:{{ item.content }}
+                  <div class="time">{{ item.time | timeFordat }}</div>
+                </div>
+
+                <el-divider />
+              </div>
+            </div>
+            <div v-if="commentList.comments" class="second">
+              <h5 class="hot text-primary">最新评论:</h5>
+              <div v-for="(item, index) in commentList.comments" :key="index">
+                <img :src="item.user.avatarUrl" alt="" class="hotimg">
+                <div class="nickname">
+                  <span class="text-primary">{{ item.user.nickname }}</span>:{{ item.content }}
+                  <div class="time">{{ item.time | timeFordat }}</div>
+                </div>
+
+                <el-divider />
+              </div>
+              <el-pagination
+                background
+                layout="prev, pager, next"
+                :total="total"
+                @current-change="handleChange"
+              />
+            </div>
+          </el-tab-pane>
+          <!--        <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>-->
+        </el-tabs>
       </div>
     </div>
-    <div class="body">
-      <el-tabs v-model="activeName">
-        <el-tab-pane label="歌曲列表" name="first">
-          <div
-            class="title border-left"
-          >
-            <h5 class=" border-right">音乐标题</h5>
-            <h5 class=" border-right ">歌手</h5>
-            <h5 class=" border-right ">专辑</h5>
-
-            <div
-              v-for="(item,index) in playlist.tracks"
-              :key="index"
-              class="border-bottom border-top "
-              @click="handleClick(item.id,index)"
-            >
-              <el-row>
-                <el-col :span="5">
-                  <div class=" border-right">
-                    <h6 class="name text-primary  "> {{ item.name }}</h6>
-                  </div>
-                </el-col>
-                <el-col :span="5">
-                  <div class="border-right">
-                    <div v-for="(artistsItem,artistsIndex) in item.ar" :key="artistsIndex" class="singer mr-auto ">
-                      {{ artistsItem.name }}
-                    </div>
-                  </div>
-
-                </el-col>
-                <el-col :span="5">
-                  <div class="border-right">
-                    <div class="album ">
-                      {{ item.al.name }}
-                    </div>
-                  </div>
-                </el-col>
-              </el-row>
-
-            </div>
-
-          </div>
-        </el-tab-pane>
-        <el-tab-pane label="评论" name="second">
-          <div style="height: 10vh;">
-            <el-input
-              v-model="textarea"
-              type="textarea"
-              placeholder="请输入内容"
-              maxlength="140"
-              show-word-limit
-            />
-            <el-button class="mr-1 mt-1" style="display: block;float: right">发送</el-button>
-          </div>
-          <div v-if="commentList.hotComments" class="second">
-            <h5 class="hot text-primary">精彩评论:</h5>
-            <div v-for="(item,index) in commentList.hotComments " :key="index">
-
-              <img :src="item.user.avatarUrl " alt="" class="hotimg">
-              <div class="nickname "><span class="text-primary">{{ item.user.nickname }}</span>:{{ item.content }}<div class="time">{{ item.time | timeFordat }}</div></div>
-
-              <el-divider />
-            </div>
-
-          </div>
-          <div v-if="commentList.comments" class="second">
-            <h5 class="hot text-primary">最新评论:</h5>
-            <div v-for="(item,index) in commentList.comments " :key="index">
-
-              <img :src="item.user.avatarUrl " alt="" class="hotimg">
-              <div class="nickname "><span class="text-primary">{{ item.user.nickname }}</span>:{{ item.content }}<div class="time">{{ item.time | timeFordat }}</div></div>
-
-              <el-divider />
-            </div>
-            <el-pagination
-              background
-              layout="prev, pager, next"
-              :total="total"
-              @current-change="handleChange"
-            />
-          </div>
-        </el-tab-pane>
-        <!--        <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>-->
-      </el-tabs>
-    </div>
-
   </div>
 </template>
 
@@ -108,6 +128,7 @@ export default {
   name: 'SongSheet',
   data() {
     return {
+      loading: true,
       playListId: null,
       playlist: [],
       privileges: [],
@@ -121,12 +142,8 @@ export default {
       idList: []
     }
   },
-  computed: {
-
-  },
-  watch: {
-
-  },
+  computed: {},
+  watch: {},
   created() {
     this.playListId = this.$route.params.id
     this.feach(this.$route.params.id)
@@ -137,6 +154,11 @@ export default {
       const { playlist, privileges } = await Home.getPlaylistInfo(val)
       this.playlist = playlist
       this.privileges = privileges
+      if (playlist) {
+        setTimeout(() => {
+          this.loading = false
+        }, 800)
+      }
     },
     /* tabs*/
     handleClick(id, index) {
@@ -150,14 +172,14 @@ export default {
     // 处理id数组
     setIDLoop() {
       this.idList = []
-      this.playlist.tracks.map(val => {
+      this.playlist.tracks.map((val) => {
         this.idList.push(val.id)
       })
       this.$store.dispatch('app/setIdList', this.idList)
       // console.log(this.idList)
     },
     // 评论详情
-    async   getCommentList(e) {
+    async getCommentList(e) {
       if (this.total > 5000) {
         const option = {
           id: e,
@@ -198,133 +220,133 @@ export default {
       // 将歌单id分发到store里面去
       this.$store.dispatch('app/setSongSheetID', this.$route.params.id)
     }
-
   }
 }
 </script>
 
 <style scoped lang="scss">
-.head{
+.head {
   position: relative;
   height: 15%;
   display: block;
-  .coverImg{
+  .coverImg {
     width: 15%;
     height: 15%;
     margin-left: -80%;
     margin-top: 2%;
   }
-  .playlistgd{
+  .playlistgd {
     display: inline-block;
     position: absolute;
-    top: 15%;
+    top: 16.5%;
     background-color: red;
     color: white;
     left: 20%;
+    font-size: 1vw;
     border-radius: 2px;
   }
-  .playlistname{
+  .playlistname {
     display: inline-block;
     position: absolute;
     top: 11%;
-    left: 22%;
-    font-size: 3vh;
+    left: 23%;
+    font-size: 2vw;
   }
-  .btnGroud{
+  .btnGroud {
     position: absolute;
     top: 85%;
     left: 20%;
+    .el-button {
+      width: auto;
+    }
   }
-  .trackCount{
+  .trackCount {
     position: absolute;
     top: 40%;
     left: 20%;
     color: #42b983;
     width: 100px;
   }
-  .playCount{
+  .playCount {
     position: absolute;
     top: 40%;
     left: 25%;
     color: #42b983;
-    width:150px;
+    width: 150px;
   }
-  .expertTags{
+  .expertTags {
     position: absolute;
     top: 40%;
     left: 35%;
     color: #42b983;
-    width:150px;
+    width: 150px;
   }
-
 }
-.body{
-  .title{
+.body {
+  .title {
     width: 100%;
     text-align: start;
     margin: 0;
     padding: 0;
 
-    h5{
+    h5 {
       display: inline-block;
       width: 20.9%;
       line-height: 2vh;
     }
-
   }
-  .name{
+  .name {
     color: #42b983;
   }
-  .el-row:hover{
-    background-color: rgba(64,158,255,0.1);
+  .el-row:hover {
+    background-color: rgba(64, 158, 255, 0.1);
   }
-  .album{
+  .album {
     color: #42b983;
     font-size: small;
     display: inline-block;
   }
-  .aliasContent{
+  .aliasContent {
     display: inline-block;
     text-align: left;
     font-size: small;
     color: #42b983;
   }
-  .singer{
+  .singer {
     font-size: small;
     color: #42b983;
     display: inline-block;
   }
-  .second{
+  .second {
     position: relative;
-    .hot{
+    .hot {
       display: block;
       position: relative;
       text-align: left;
     }
-    .hotimg{
+    .hotimg {
       position: absolute;
       left: 0%;
       width: 5vh;
       height: 5vh;
       border-radius: 50%;
     }
-    .nickname{
+    .nickname {
       display: inline-block;
       position: relative;
       width: 95%;
       left: 1.4%;
       text-align: left;
     }
-    .time{
+    .time {
       text-align: left;
       color: #757575;
     }
   }
-  .description{
+  .description {
     width: 90%;
     text-align: left;
-    white-space:pre
+    white-space: pre;
   }
-
 }
 </style>

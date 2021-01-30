@@ -110,6 +110,7 @@ export default {
             }
             .name{
               display: inline-block;
+              font-size: 0.8em;
             }
 
           }
@@ -140,6 +141,7 @@ export default {
         }
         .name{
           display: inline-block;
+            font-size: 0.8em;
         }
 
       }

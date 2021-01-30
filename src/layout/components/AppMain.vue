@@ -1,7 +1,9 @@
 <template>
   <div>
     <transition name="fade-transform" mode="out-in">
-      <router-view :key="key" />
+      <keep-alive>
+        <router-view :key="key" />
+      </keep-alive>
     </transition>
   </div>
 </template>
@@ -17,6 +19,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
